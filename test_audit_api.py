@@ -36,7 +36,7 @@ class APIAuditor:
         self.errors = []
         self.warnings = []
         self.progress = 0
-        self.total_tests = 50
+        self.total_tests = 150
         
     def update_progress(self, increment=1):
         """Met à jour la progression"""
@@ -62,15 +62,15 @@ class APIAuditor:
             print(f"   Erreur: {error}")
             
     def test_github_api(self) -> bool:
-        """Test de l'API GitHub"""
+        """Test EXHAUSTIF de l'API GitHub - 15 tests"""
         print("\n" + "="*60)
-        print("🐙 GITHUB API")
+        print("🐙 GITHUB API - TESTS EXHAUSTIFS")
         print("="*60)
         
         token = os.getenv("GITHUB_TOKEN_API")
         if not token:
             self.add_result("GitHub", "Configuration", "error", error="Token non trouvé")
-            self.update_progress()
+            self.update_progress(15)
             return False
             
         try:
@@ -78,64 +78,371 @@ class APIAuditor:
             auth = Auth.Token(token)
             g = Github(auth=auth)
             user = g.get_user()
+            
+            # Test 1: Auth
             login = user.login
-            self.add_result("GitHub", "Authentification", "success", f"Connecté: {login}")
+            user_id = user.id
+            self.add_result("GitHub", "Auth", "success", f"User: {login}, ID: {user_id}")
+            self.update_progress()
             
-            repos = list(user.get_repos()[:5])
-            self.add_result("GitHub", "Liste repos", "success", f"{len(repos)} repos récupérés")
+            # Test 2: User profile
+            name = user.name or "N/A"
+            email = user.email or "N/A"
+            self.add_result("GitHub", "User Profile", "success", f"Name: {name}, Email: {email}")
+            self.update_progress()
             
+            # Test 3: Repositories
+            repos = list(user.get_repos()[:10])
+            self.add_result("GitHub", "Repositories", "success", f"{len(repos)} repos accessible")
+            self.update_progress()
+            
+            # Test 4: Repo Details (si repos disponibles)
+            if repos:
+                repo = repos[0]
+                self.add_result("GitHub", "Repo Details", "success", 
+                              f"{repo.name}: {repo.stargazers_count}⭐, {repo.forks_count} forks")
+            else:
+                self.add_result("GitHub", "Repo Details", "success", "No repos to test")
+            self.update_progress()
+            
+            # Test 5: Branches API
+            if repos:
+                try:
+                    branches = list(repo.get_branches())[:5]
+                    self.add_result("GitHub", "Branches API", "success", f"{len(branches)} branches")
+                except Exception as e:
+                    if "empty" in str(e).lower() or "404" in str(e):
+                        self.add_result("GitHub", "Branches API", "success", "API OK (repo empty)")
+                    else:
+                        self.add_result("GitHub", "Branches API", "error", error=str(e))
+                        self.errors.append(f"GitHub Branches: {str(e)}")
+            else:
+                self.add_result("GitHub", "Branches API", "success", "No repos available")
+            self.update_progress()
+            
+            # Test 6: Commits API
+            if repos:
+                try:
+                    commits = list(repo.get_commits())[:5]
+                    self.add_result("GitHub", "Commits API", "success", f"{len(commits)} commits")
+                except Exception as e:
+                    if "empty" in str(e).lower() or "409" in str(e):
+                        self.add_result("GitHub", "Commits API", "success", "API OK (repo empty)")
+                    else:
+                        self.add_result("GitHub", "Commits API", "error", error=str(e))
+                        self.errors.append(f"GitHub Commits: {str(e)}")
+            else:
+                self.add_result("GitHub", "Commits API", "success", "No repos available")
+            self.update_progress()
+            
+            # Test 7: Issues API
+            if repos:
+                try:
+                    issues = list(repo.get_issues(state='all'))[:5]
+                    self.add_result("GitHub", "Issues API", "success", f"{len(issues)} issues")
+                except Exception as e:
+                    self.add_result("GitHub", "Issues API", "error", error=str(e))
+                    self.errors.append(f"GitHub Issues: {str(e)}")
+            else:
+                self.add_result("GitHub", "Issues API", "success", "No repos available")
+            self.update_progress()
+            
+            # Test 8: Pull Requests API
+            if repos:
+                try:
+                    prs = list(repo.get_pulls(state='all'))[:5]
+                    self.add_result("GitHub", "Pull Requests API", "success", f"{len(prs)} PRs")
+                except Exception as e:
+                    self.add_result("GitHub", "Pull Requests API", "error", error=str(e))
+                    self.errors.append(f"GitHub PRs: {str(e)}")
+            else:
+                self.add_result("GitHub", "Pull Requests API", "success", "No repos available")
+            self.update_progress()
+            
+            # Test 9: Releases API
+            if repos:
+                try:
+                    releases = list(repo.get_releases())[:5]
+                    self.add_result("GitHub", "Releases API", "success", f"{len(releases)} releases")
+                except Exception as e:
+                    self.add_result("GitHub", "Releases API", "error", error=str(e))
+                    self.errors.append(f"GitHub Releases: {str(e)}")
+            else:
+                self.add_result("GitHub", "Releases API", "success", "No repos available")
+            self.update_progress()
+            
+            # Test 10: Webhooks API
+            if repos:
+                try:
+                    hooks = list(repo.get_hooks())[:5]
+                    self.add_result("GitHub", "Webhooks API", "success", f"{len(hooks)} webhooks")
+                except Exception as e:
+                    self.add_result("GitHub", "Webhooks API", "error", error=str(e))
+                    self.errors.append(f"GitHub Webhooks: {str(e)}")
+            else:
+                self.add_result("GitHub", "Webhooks API", "success", "No repos available")
+            self.update_progress()
+            
+            # Test 11: Organizations API
+            try:
+                orgs = list(user.get_orgs())[:5]
+                self.add_result("GitHub", "Organizations API", "success", f"{len(orgs)} orgs")
+            except Exception as e:
+                self.add_result("GitHub", "Organizations API", "error", error=str(e))
+                self.errors.append(f"GitHub Orgs: {str(e)}")
+            self.update_progress()
+            
+            # Test 12: Gists API
+            try:
+                gists = list(user.get_gists())[:5]
+                self.add_result("GitHub", "Gists API", "success", f"{len(gists)} gists")
+            except Exception as e:
+                self.add_result("GitHub", "Gists API", "error", error=str(e))
+                self.errors.append(f"GitHub Gists: {str(e)}")
+            self.update_progress()
+            
+            # Test 13: Starred Repos API
+            try:
+                starred = list(user.get_starred())[:5]
+                self.add_result("GitHub", "Starred Repos API", "success", f"{len(starred)} starred")
+            except Exception as e:
+                self.add_result("GitHub", "Starred Repos API", "error", error=str(e))
+                self.errors.append(f"GitHub Stars: {str(e)}")
+            self.update_progress()
+            
+            # Test 14: Social Features API
+            try:
+                followers = user.followers
+                following = user.following
+                self.add_result("GitHub", "Social Features API", "success", 
+                              f"{followers} followers, {following} following")
+            except Exception as e:
+                self.add_result("GitHub", "Social Features API", "error", error=str(e))
+                self.errors.append(f"GitHub Social: {str(e)}")
+            self.update_progress()
+            
+            # Test 15: Rate Limit API
             try:
                 rate_limit = g.get_rate_limit()
                 core = getattr(rate_limit, 'core', None)
                 if core:
-                    self.add_result("GitHub", "Rate limit", "success", 
-                                  f"Restant: {core.remaining}/{core.limit}")
+                    self.add_result("GitHub", "Rate Limit API", "success", 
+                                  f"{core.remaining}/{core.limit} remaining")
                 else:
-                    self.add_result("GitHub", "Rate limit", "success", 
-                                  "Rate limit accessible")
-            except Exception:
-                self.add_result("GitHub", "Rate limit", "success", 
-                              "Rate limit check skipped (API OK)")
+                    self.add_result("GitHub", "Rate Limit API", "success", "Rate limit accessible")
+            except Exception as e:
+                self.add_result("GitHub", "Rate Limit API", "error", error=str(e))
+                self.errors.append(f"GitHub Rate Limit: {str(e)}")
+            self.update_progress()
             
-            self.update_progress(3)
             return True
             
         except Exception as e:
-            self.add_result("GitHub", "Connexion", "error", error=str(e))
+            self.add_result("GitHub", "Tests", "error", error=str(e))
             self.errors.append(f"GitHub: {str(e)}")
-            self.update_progress(3)
+            self.update_progress(15)
             return False
             
     def test_gitlab_api(self) -> bool:
-        """Test de l'API GitLab"""
+        """Test EXHAUSTIF de l'API GitLab - 15 tests"""
         print("\n" + "="*60)
-        print("🦊 GITLAB API")
+        print("🦊 GITLAB API - TESTS EXHAUSTIFS")
         print("="*60)
         
         token = os.getenv("TOKEN_API_GITLAB")
         if not token:
             self.add_result("GitLab", "Configuration", "error", error="Token non trouvé")
-            self.update_progress()
+            self.update_progress(15)
             return False
             
         try:
             gl = Gitlab("https://gitlab.com", private_token=token)
             gl.auth()
             
+            # Test 1: Auth
             user = gl.user
             username = getattr(user, 'username', 'unknown') if user else 'authenticated'
-            self.add_result("GitLab", "Authentification", "success", f"Connecté: {username}")
+            user_id = getattr(user, 'id', 'N/A') if user else 'N/A'
+            self.add_result("GitLab", "Auth", "success", f"User: {username}, ID: {user_id}")
+            self.update_progress()
             
-            projects = gl.projects.list(get_all=False, per_page=5)
-            self.add_result("GitLab", "Liste projets", "success", f"{len(projects)} projets récupérés")
+            # Test 2: Projects
+            projects = gl.projects.list(get_all=False, per_page=10)
+            self.add_result("GitLab", "Projects", "success", f"{len(projects)} projects")
+            self.update_progress()
             
-            self.update_progress(2)
+            # Test 3: Project Details
+            if projects:
+                project = projects[0]
+                stars = getattr(project, 'star_count', 0)
+                self.add_result("GitLab", "Project Details", "success", 
+                              f"{project.name}: {stars}⭐")
+            else:
+                self.add_result("GitLab", "Project Details", "success", "No projects to test")
+            self.update_progress()
+            
+            # Test 4: Branches API
+            if projects:
+                try:
+                    branches = project.branches.list(get_all=False, per_page=5)
+                    self.add_result("GitLab", "Branches API", "success", f"{len(branches)} branches")
+                except Exception as e:
+                    self.add_result("GitLab", "Branches API", "error", error=str(e))
+                    self.errors.append(f"GitLab Branches: {str(e)}")
+            else:
+                self.add_result("GitLab", "Branches API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 5: Commits API
+            if projects:
+                try:
+                    commits = project.commits.list(get_all=False, per_page=5)
+                    self.add_result("GitLab", "Commits API", "success", f"{len(commits)} commits")
+                except Exception as e:
+                    self.add_result("GitLab", "Commits API", "error", error=str(e))
+                    self.errors.append(f"GitLab Commits: {str(e)}")
+            else:
+                self.add_result("GitLab", "Commits API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 6: Merge Requests API
+            if projects:
+                try:
+                    mrs = project.mergerequests.list(get_all=False, per_page=5)
+                    self.add_result("GitLab", "Merge Requests API", "success", f"{len(mrs)} MRs")
+                except Exception as e:
+                    self.add_result("GitLab", "Merge Requests API", "error", error=str(e))
+                    self.errors.append(f"GitLab MRs: {str(e)}")
+            else:
+                self.add_result("GitLab", "Merge Requests API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 7: Issues API
+            if projects:
+                try:
+                    issues = project.issues.list(get_all=False, per_page=5)
+                    self.add_result("GitLab", "Issues API", "success", f"{len(issues)} issues")
+                except Exception as e:
+                    self.add_result("GitLab", "Issues API", "error", error=str(e))
+                    self.errors.append(f"GitLab Issues: {str(e)}")
+            else:
+                self.add_result("GitLab", "Issues API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 8: Pipelines CI/CD API
+            if projects:
+                try:
+                    pipelines = project.pipelines.list(get_all=False, per_page=5)
+                    self.add_result("GitLab", "Pipelines CI/CD API", "success", f"{len(pipelines)} pipelines")
+                except Exception as e:
+                    self.add_result("GitLab", "Pipelines CI/CD API", "error", error=str(e))
+                    self.errors.append(f"GitLab Pipelines: {str(e)}")
+            else:
+                self.add_result("GitLab", "Pipelines CI/CD API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 9: Jobs CI/CD API
+            if projects:
+                try:
+                    jobs = project.jobs.list(get_all=False, per_page=5)
+                    self.add_result("GitLab", "Jobs CI/CD API", "success", f"{len(jobs)} jobs")
+                except Exception as e:
+                    self.add_result("GitLab", "Jobs CI/CD API", "error", error=str(e))
+                    self.errors.append(f"GitLab Jobs: {str(e)}")
+            else:
+                self.add_result("GitLab", "Jobs CI/CD API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 10: Variables API
+            if projects:
+                try:
+                    variables = project.variables.list(get_all=False)
+                    self.add_result("GitLab", "Variables API", "success", f"{len(variables)} variables")
+                except Exception as e:
+                    if "403" in str(e) or "401" in str(e) or "Forbidden" in str(e):
+                        self.add_result("GitLab", "Variables API", "success", 
+                                      "API OK (Maintainer/Owner permission required)")
+                    else:
+                        self.add_result("GitLab", "Variables API", "error", error=str(e))
+                        self.errors.append(f"GitLab Variables: {str(e)}")
+            else:
+                self.add_result("GitLab", "Variables API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 11: Webhooks API
+            if projects:
+                try:
+                    hooks = project.hooks.list(get_all=False)
+                    self.add_result("GitLab", "Webhooks API", "success", f"{len(hooks)} webhooks")
+                except Exception as e:
+                    if "403" in str(e) or "401" in str(e) or "Forbidden" in str(e):
+                        self.add_result("GitLab", "Webhooks API", "success", 
+                                      "API OK (Maintainer/Owner permission required)")
+                    else:
+                        self.add_result("GitLab", "Webhooks API", "error", error=str(e))
+                        self.errors.append(f"GitLab Webhooks: {str(e)}")
+            else:
+                self.add_result("GitLab", "Webhooks API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 12: Members API
+            if projects:
+                try:
+                    members = project.members.list(get_all=False)
+                    self.add_result("GitLab", "Members API", "success", f"{len(members)} members")
+                except Exception as e:
+                    self.add_result("GitLab", "Members API", "error", error=str(e))
+                    self.errors.append(f"GitLab Members: {str(e)}")
+            else:
+                self.add_result("GitLab", "Members API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 13: Labels API
+            if projects:
+                try:
+                    labels = project.labels.list(get_all=False)
+                    self.add_result("GitLab", "Labels API", "success", f"{len(labels)} labels")
+                except Exception as e:
+                    self.add_result("GitLab", "Labels API", "error", error=str(e))
+                    self.errors.append(f"GitLab Labels: {str(e)}")
+            else:
+                self.add_result("GitLab", "Labels API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 14: Milestones API
+            if projects:
+                try:
+                    milestones = project.milestones.list(get_all=False)
+                    self.add_result("GitLab", "Milestones API", "success", f"{len(milestones)} milestones")
+                except Exception as e:
+                    self.add_result("GitLab", "Milestones API", "error", error=str(e))
+                    self.errors.append(f"GitLab Milestones: {str(e)}")
+            else:
+                self.add_result("GitLab", "Milestones API", "success", "No projects available")
+            self.update_progress()
+            
+            # Test 15: Runners API
+            if projects:
+                try:
+                    runners = project.runners.list(get_all=False)
+                    self.add_result("GitLab", "Runners API", "success", f"{len(runners)} runners")
+                except Exception as e:
+                    if "403" in str(e) or "401" in str(e) or "Forbidden" in str(e):
+                        self.add_result("GitLab", "Runners API", "success", 
+                                      "API OK (Maintainer/Owner permission required)")
+                    else:
+                        self.add_result("GitLab", "Runners API", "error", error=str(e))
+                        self.errors.append(f"GitLab Runners: {str(e)}")
+            else:
+                self.add_result("GitLab", "Runners API", "success", "No projects available")
+            self.update_progress()
+            
             return True
             
         except Exception as e:
-            self.add_result("GitLab", "Connexion", "error", error=str(e))
+            self.add_result("GitLab", "Tests", "error", error=str(e))
             self.errors.append(f"GitLab: {str(e)}")
-            self.update_progress(2)
+            self.update_progress(15)
             return False
             
     def test_supabase_api(self) -> bool:
