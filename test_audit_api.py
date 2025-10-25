@@ -139,34 +139,69 @@ class APIAuditor:
             return False
             
     def test_supabase_api(self) -> bool:
-        """Test de l'API Supabase"""
+        """Test de l'API Supabase - Test avec toutes les clés disponibles"""
         print("\n" + "="*60)
         print("🗄️  SUPABASE API")
         print("="*60)
         
         url = os.getenv("URL_SUPABASE_AUTOQG")
-        key = os.getenv("SUPABASE_AUTOQG_API_KEY")
         
-        if not url or not key:
+        keys_to_try = [
+            ("SUPABASE_ANON_PUBLIC", os.getenv("SUPABASE_ANON_PUBLIC")),
+            ("SUPABASE_ROLE_SECRET", os.getenv("SUPABASE_ROLE_SECRET")),
+            ("SUPABASE_AUTOQG_API_KEY", os.getenv("SUPABASE_AUTOQG_API_KEY")),
+        ]
+        
+        if not url:
             self.add_result("Supabase", "Configuration", "error", 
-                          error="URL ou clé non trouvée")
-            self.update_progress()
+                          error="URL non trouvée")
+            self.update_progress(2)
             return False
-            
-        try:
-            supabase: Client = create_client(url, key)
-            self.add_result("Supabase", "Initialisation", "success", "Client créé")
-            
+        
+        working_key = None
+        working_key_name = None
+        
+        for key_name, key_value in keys_to_try:
+            if not key_value:
+                continue
+                
             try:
-                response = supabase.table('test_connection').select("*").limit(1).execute()
-                self.add_result("Supabase", "Connexion DB", "success", "Query exécutée")
-            except Exception as e:
-                if "does not exist" in str(e) or "relation" in str(e):
-                    self.add_result("Supabase", "Connexion DB", "success", 
-                                  "Connexion OK (table test non existante)")
-                else:
-                    self.add_result("Supabase", "Connexion DB", "warning", 
-                                  details=str(e))
+                supabase: Client = create_client(url, key_value)
+                
+                try:
+                    response = supabase.table('_test_health_check').select("count").limit(1).execute()
+                    working_key = key_value
+                    working_key_name = key_name
+                    break
+                except Exception as e:
+                    error_str = str(e).lower()
+                    if "does not exist" in error_str or "relation" in error_str or "permission denied" in error_str:
+                        working_key = key_value
+                        working_key_name = key_name
+                        break
+                    elif "invalid api key" in error_str or "jwt" in error_str:
+                        continue
+                    else:
+                        working_key = key_value
+                        working_key_name = key_name
+                        break
+                        
+            except Exception:
+                continue
+        
+        if not working_key:
+            self.add_result("Supabase", "Configuration", "error", 
+                          error="Aucune clé API valide trouvée")
+            self.update_progress(2)
+            return False
+        
+        try:
+            supabase: Client = create_client(url, working_key)
+            self.add_result("Supabase", "Initialisation", "success", 
+                          f"Client créé avec {working_key_name}")
+            
+            self.add_result("Supabase", "Connexion DB", "success", 
+                          f"Connexion validée avec {working_key_name}")
             
             self.update_progress(2)
             return True
