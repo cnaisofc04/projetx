@@ -36,7 +36,7 @@ class APIAuditor:
         self.errors = []
         self.warnings = []
         self.progress = 0
-        self.total_tests = 150
+        self.total_tests = 57  # Tests réellement implémentés
         
     def update_progress(self, increment=1):
         """Met à jour la progression"""
