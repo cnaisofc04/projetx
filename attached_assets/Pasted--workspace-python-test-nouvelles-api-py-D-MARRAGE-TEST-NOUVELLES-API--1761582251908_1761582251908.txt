@@ -1,0 +1,62 @@
+~/workspace$ python test_nouvelles_api.py
+🚀 DÉMARRAGE TEST NOUVELLES API
+============================================================
+Date: 2025-10-27 16:22:44
+============================================================
+
+============================================================
+🤖 OPENAI API - TESTS
+============================================================
+✅ OpenAI - Initialisation Client: SUCCESS
+   → Client créé
+✅ OpenAI - Liste Modèles: SUCCESS
+   → Modèles: gpt-3.5-turbo, gpt-5-search-api-2025-10-14, gpt-audio-mini-2025-10-06
+❌ OpenAI - Chat Completion: ERROR
+   ❌ Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+
+============================================================
+🔴 REDIS API - TESTS
+============================================================
+⚠️ Redis - Configuration URL: WARNING
+   → REDIS_URL non configurée
+
+============================================================
+📹 LOGROCKET API - TESTS
+============================================================
+✅ LogRocket - Configuration Clé: SUCCESS
+   → Clé API présente (frontend JS requis)
+⚠️ LogRocket - API REST: WARNING
+   → Status 403 (vérifier clé)
+
+============================================================
+📊 AMPLITUDE API - TESTS
+============================================================
+✅ Amplitude - Configuration Clé: SUCCESS
+   → Clé API présente
+⚠️ Amplitude - Envoi Event: WARNING
+   → Status 400
+
+============================================================
+🔄 VÉRIFICATION API EXISTANTES
+============================================================
+✅ GitHub - Quick Check: SUCCESS
+   → User: cnaisofc04
+✅ GitLab - Quick Check: SUCCESS
+   → Auth OK
+✅ Supabase - Quick Check: SUCCESS
+   → Client créé
+✅ Stripe - Quick Check: SUCCESS
+   → Account: acct_1SM7zi2LOg5Xc155
+✅ Trello - Quick Check: SUCCESS
+   → User: cnaisofc02
+✅ Resend - Quick Check: SUCCESS
+   → API OK
+
+============================================================
+✅ TESTS TERMINÉS
+============================================================
+
+📄 Rapport: RAPPORT_NOUVELLES_API_20251027_162249.md
+📊 Succès: 10/14
+❌ Échecs: 1
+============================================================
