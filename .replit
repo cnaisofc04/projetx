@@ -27,3 +27,12 @@ args = "python test_audit_api.py"
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow]]
+name = "Test API Basic"
+author = 49008653
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python test_api_basic.py"
