@@ -45,3 +45,12 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python test_nouvelles_api_complet.py"
+
+[[workflows.workflow]]
+name = "Test Tous Secrets"
+author = 49008653
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python test_tous_secrets.py"
