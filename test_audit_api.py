@@ -1013,7 +1013,10 @@ class APIAuditor:
             "API_ENDPOINT_APPRWRITE", "api_key_secret_supabase", "GABRIEL_API_KEY_1",
             "GITHUB_TOKEN_API", "PROJET_ID_APPWRITE", "RESEND_API_KEY",
             "STRIPE_API_KEY_PUBLIC", "SUPABASE_ANON_PUBLIC", "SUPABASE_AUTOQG_API_KEY",
-            "SUPABASE_ROLE_SECRET"
+            "SUPABASE_ROLE_SECRET", "MY_TEST_KEY_OPEN_AI_API", "Try_out_Your_new_API_key_NODE",
+            "Try_out_your_new_API_key_Python", "REDIS_API_KEY", "OPEN_AI_API_KEY",
+            "LOGROCKET_API_KEY", "AMPLITUDE_API_KEY", "AMPLITUDE_Standard_Server_url",
+            "AMPLITUDE_EU_Residency_Server_URL", "MAPBOX_ACCESS_TOKEN"
         ]
         
         report += f"**Total**: {len(secrets)} secrets configurés\n\n"
