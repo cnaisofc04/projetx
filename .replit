@@ -56,6 +56,15 @@ mode = "sequential"
 task = "shell.exec"
 args = "python test_tous_secrets.py"
 
+[[workflows.workflow]]
+name = "Test Secrets Ultra-Complet"
+author = 49158868
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python test_secrets_ultra_complet.py"
+
 [deployment]
 deploymentTarget = "autoscale"
 run = ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
