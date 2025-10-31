@@ -1,7 +1,7 @@
 
 #!/usr/bin/env python3
 """
-TEST ULTRA-COMPLET V2 - TOUS LES SECRETS (40 SECRETS)
+TEST ULTRA-COMPLET V2 - TOUS LES 40 SECRETS
 Inclut les nouveaux secrets AGORA et REDIS multiples
 Génère un rapport AVANT/APRÈS sans toucher aux anciens rapports
 """
@@ -71,9 +71,9 @@ class TesteurSecretsV2:
             self.log("AGORA_APP_CERTIFICATE", "success", f"Certificate configuré ({len(cert)} chars)")
     
     def test_redis_multiples(self):
-        """Test TOUS les secrets REDIS (12 secrets)"""
+        """Test TOUS les secrets REDIS (13 secrets)"""
         print(f"\n{'='*60}")
-        print("🗄️  REDIS - TOUS LES SECRETS (12)")
+        print("🗄️  REDIS - TOUS LES SECRETS (13)")
         print(f"{'='*60}")
         
         redis_secrets = [
