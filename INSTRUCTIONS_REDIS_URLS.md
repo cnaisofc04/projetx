@@ -14,7 +14,7 @@ Mais ce n'est **PAS** l'URL de connexion pour Redis !
 
 ### ÉTAPE 1 : Aller dans votre console Redis Cloud
 
-1. Connectez-vous à https://app.redislabs.com/
+1. Connectez-vous à https://app.redislabsredis://default:LDR68KZDSO3H7kdvLUQ71Zh2Tvln0UHG@redis-13195.c339.eu-west-3-1.ec2.redns.redis-cloud.com:13195redis://default:LDR68KZDSO3H7kdvLUQ71Zh2Tvln0UHG@redis-13195.c339.eu-west-3-1.ec2.redns.redis-cloud.com:13195redis://default:LDR68KZDSO3H7kdvLUQ71Zh2Tvln0UHG@redis-13195.c339.eu-west-3-1.ec2.redns.redis-cloud.com:13195redis://default:LDR68KZDSO3H7kdvLUQ71Zh2Tvln0UHG@redis-13195.c339.eu-west-3-1.ec2.redns.redis-cloud.com:13195.com/
 2. Dans le menu latéral, cliquez sur **"Databases"**
 3. Vous devriez voir une liste de vos bases de données Redis
 
