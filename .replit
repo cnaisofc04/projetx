@@ -18,6 +18,10 @@ author = "agent"
 task = "workflow.run"
 args = "Audit API"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
 [[workflows.workflow]]
 name = "Audit API"
 author = "agent"
@@ -74,6 +78,26 @@ mode = "sequential"
 task = "shell.exec"
 args = "python test_secrets_ultra_complet_v2.py"
 
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
 [deployment]
 deploymentTarget = "autoscale"
 run = ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 41881
+externalPort = 3000
