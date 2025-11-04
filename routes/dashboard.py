@@ -30,7 +30,7 @@ def api_status():
         from modules.geolocation.mapbox_service import mapbox_service
         from modules.services.additional_services import additional_services
         from security.api_manager import api_key_manager
-        
+
         status = {
             'timestamp': datetime.now().isoformat(),
             'modules': {
@@ -45,12 +45,12 @@ def api_status():
                 'additional_services': additional_services.get_status(),
             },
             'security': {
-                'api_keys_status': api_key_manager.get_status()
+                'api_keys_status': api_key_manager.get_all_platforms_status()
             }
         }
-        
+
         return jsonify(status)
-        
+
     except Exception as e:
         logger.error(f"Erreur récupération statut: {e}")
         return jsonify({'error': str(e)}), 500
