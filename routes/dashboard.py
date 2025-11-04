@@ -2,6 +2,8 @@
 Dashboard centralisé pour monitorer tous les modules
 """
 from flask import Blueprint, render_template, jsonify
+from datetime import datetime
+from typing import Dict, Any
 import logging
 
 dashboard_bp = Blueprint('dashboard', __name__)
@@ -18,15 +20,15 @@ def index():
 def api_status():
     """API retournant le statut de tous les modules"""
     try:
-        from modules.auth import auth_service
-        from modules.payments import stripe_service
-        from modules.cache import redis_service
-        from modules.ai import openai_service
-        from modules.analytics import analytics_service
-        from modules.communication import communication_service
-        from modules.collaboration import collaboration_service
-        from modules.geolocation import mapbox_service
-        from modules.services import additional_services
+        from modules.auth.auth_service import auth_service
+        from modules.payments.stripe_service import stripe_service
+        from modules.cache.redis_service import redis_service
+        from modules.ai.openai_service import openai_service
+        from modules.analytics.analytics_service import analytics_service
+        from modules.communication.communication_service import communication_service
+        from modules.collaboration.collaboration_service import collaboration_service
+        from modules.geolocation.mapbox_service import mapbox_service
+        from modules.services.additional_services import additional_services
         from security.api_manager import api_key_manager
         
         status = {
@@ -52,6 +54,3 @@ def api_status():
     except Exception as e:
         logger.error(f"Erreur récupération statut: {e}")
         return jsonify({'error': str(e)}), 500
-
-
-from datetime import datetime

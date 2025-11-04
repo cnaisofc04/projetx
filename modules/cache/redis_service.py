@@ -3,7 +3,7 @@ Service de cache Redis
 Optimisé pour le free tier avec stratégies intelligentes
 """
 import logging
-from typing import Optional, Any
+from typing import Optional, Any, Dict
 import json
 from datetime import timedelta
 
