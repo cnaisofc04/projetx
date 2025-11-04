@@ -1,10 +1,11 @@
+
 """
-Gestionnaire centralisé et sécurisé des API keys
-Principe: Aucune clé n'est jamais exposée en clair dans le code
+Gestionnaire centralisé et sécurisé des API keys - ULTRA MODULAIRE
+Chaque plateforme est gérée indépendamment avec toutes ses fonctions
 """
 import os
 import logging
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from functools import lru_cache
 
 logger = logging.getLogger(__name__)
@@ -12,86 +13,331 @@ logger = logging.getLogger(__name__)
 
 class APIKeyManager:
     """
-    Gestionnaire sécurisé des clés API
-    - Charge les clés depuis l'environnement
-    - Vérifie leur présence
-    - Ne log jamais les valeurs réelles
-    - Cache les résultats pour performance
+    Gestionnaire sécurisé ultra-modulaire des clés API
+    - Toutes les plateformes supportées
+    - Toutes les clés reconnues
+    - Validation complète par plateforme
     """
     
-    def __init__(self):
-        self._available_keys = {}
-        self._check_all_keys()
-    
-    def _check_all_keys(self):
-        """Vérifie quelles clés API sont disponibles sans les exposer"""
-        all_env_keys = [
-            'OPEN_AI_API_KEY', 'STRIPE_API_KEY_SECRET', 'STRIPE_API_KEY_PUBLIC',
-            'SUPABASE_AUTOQG_API_KEY', 'REDIS_API_KEY', 'GITHUB_TOKEN_API',
-            'GITLAB_TOKEN', 'TRELLO_API_KEY', 'RESEND_API_KEY', 
-            'AMPLITUDE_API_KEY', 'LOG_ROCKET_API_KEY', 'AGORA_APP_ID',
-            'MAPBOX_ACCESS_TOKEN', 'AIRTABLE_API_KEY', 'POSTHOG_API_KEY',
-        ]
+    # Mapping COMPLET de toutes les plateformes
+    PLATFORMS = {
+        # Authentication & Backend
+        'supabase': {
+            'keys': ['URL_SUPABASE_AUTOQG', 'SUPABASE_ANON_PUBLIC', 'SUPABASE_AUTOQG_API_KEY', 
+                    'SUPABASE_ROLE_SECRET', 'api_key_secret_supabase'],
+            'name': 'Supabase',
+            'type': 'backend'
+        },
+        'appwrite': {
+            'keys': ['API_ENDPOINT_APPRWRITE', 'PROJET_ID_APPWRITE'],
+            'name': 'Appwrite',
+            'type': 'backend'
+        },
         
-        for key in all_env_keys:
-            value = os.environ.get(key)
-            self._available_keys[key] = value is not None and len(value) > 0
-            
-            if self._available_keys[key]:
-                logger.info(f"✓ {key} disponible")
-            else:
-                logger.warning(f"✗ {key} manquante")
+        # Payments
+        'stripe': {
+            'keys': ['STRIPE_API_KEY_SECRET', 'STRIPE_API_KEY_PUBLIC'],
+            'name': 'Stripe',
+            'type': 'payment'
+        },
+        
+        # AI & Machine Learning
+        'openai': {
+            'keys': ['OPEN_AI_API_KEY', 'MY_TEST_KEY_OPEN_AI_API'],
+            'name': 'OpenAI',
+            'type': 'ai'
+        },
+        
+        # Cache & Database
+        'redis': {
+            'keys': ['REDIS_API_KEY', 'REDIS_URL_us_east_1', 'REDIS_API_account_key',
+                    'REDIS_CLI', 'REDIS_API_KEY_GENERATED_LangCache', 'REDIS_CACHE_ID',
+                    'REDIS_CLIENT', 'REDIS_SERVICE_NAME', 'REDIS_QUICK_CONNECT'],
+            'name': 'Redis',
+            'type': 'cache'
+        },
+        'postgres': {
+            'keys': ['DATABASE_URL', 'PGDATABASE', 'PGHOST', 'PGPORT', 'PGUSER', 'PGPASSWORD'],
+            'name': 'PostgreSQL',
+            'type': 'database'
+        },
+        
+        # Version Control & Collaboration
+        'github': {
+            'keys': ['GITHUB_TOKEN_API'],
+            'name': 'GitHub',
+            'type': 'collaboration'
+        },
+        'gitlab': {
+            'keys': ['TOKEN_API_GITLAB'],
+            'name': 'GitLab',
+            'type': 'collaboration'
+        },
+        'trello': {
+            'keys': ['TRELLO_API_KEY', 'TRELLO_TOKEN'],
+            'name': 'Trello',
+            'type': 'collaboration'
+        },
+        
+        # Communication
+        'resend': {
+            'keys': ['RESEND_API_KEY'],
+            'name': 'Resend',
+            'type': 'communication'
+        },
+        'agora': {
+            'keys': ['AGORA_APP_ID', 'AGORA_Primary_Certificate', 'AGORA_Secondary_Certificate'],
+            'name': 'Agora',
+            'type': 'communication'
+        },
+        
+        # Analytics & Monitoring
+        'amplitude': {
+            'keys': ['AMPLITUDE_API_KEY', 'AMPLITUDE_Standard_Server_url', 'AMPLITUDE_EU_Residency_Server_URL'],
+            'name': 'Amplitude',
+            'type': 'analytics'
+        },
+        'logrocket': {
+            'keys': ['LOG_ROCKET_API_KEY', 'LOG_ROCKET_App_ID', 'LOG_ROCKET_Project_Name',
+                    'LOG_ROCKET_Manually_sanitize_text_and_inputs',
+                    'LOG_ROCKET_Automatically_sanitize_all_text_and_inputs',
+                    'LOG_ROCKET_Automatically_sanitize_all_text_and_inputs_2',
+                    'LOG_ROCKET_Automatically_sanitize_network_requests',
+                    'LOG_ROCKET_Automatically_sanitize_network_responses'],
+            'name': 'LogRocket',
+            'type': 'analytics'
+        },
+        'posthog': {
+            'keys': ['POSTHOG_API_KEY'],
+            'name': 'PostHog',
+            'type': 'analytics'
+        },
+        
+        # Maps & Location
+        'mapbox': {
+            'keys': ['MAPBOX_ACCESS_TOKEN'],
+            'name': 'Mapbox',
+            'type': 'geolocation'
+        },
+        
+        # Data & Storage
+        'airtable': {
+            'keys': ['AIRTABLE_API_KEY'],
+            'name': 'Airtable',
+            'type': 'data'
+        },
+        
+        # Automation & Workflows
+        'pipedream': {
+            'keys': ['PIPEDREAM_API_KEY_Client_ID', 'PIPEDREAM_API_KEY_Client_Secret', 
+                    'PIPEDREAM_Workspace_ID'],
+            'name': 'Pipedream',
+            'type': 'automation'
+        },
+        
+        # Mobile Development
+        'expo': {
+            'keys': ['EXPO_API_KEY'],
+            'name': 'Expo',
+            'type': 'mobile'
+        },
+        
+        # AI Assistants
+        'flowith': {
+            'keys': ['FLOWITH_API_KEY'],
+            'name': 'Flowith',
+            'type': 'ai'
+        },
+        
+        # Custom APIs
+        'gabriel': {
+            'keys': ['GABRIEL_API_KEY_1'],
+            'name': 'Gabriel API',
+            'type': 'custom'
+        },
+        'manus': {
+            'keys': ['MANUS_API_KEY'],
+            'name': 'Manus API',
+            'type': 'custom'
+        },
+        
+        # Testing
+        'test_node': {
+            'keys': ['Try_out_Your_new_API_key_NODE'],
+            'name': 'Test Node API',
+            'type': 'test'
+        },
+        'test_python': {
+            'keys': ['Try_out_your_new_API_key_Python'],
+            'name': 'Test Python API',
+            'type': 'test'
+        },
+        
+        # Security
+        'session': {
+            'keys': ['SESSION_SECRET'],
+            'name': 'Session',
+            'type': 'security'
+        }
+    }
     
-    @lru_cache(maxsize=128)
-    def get_key(self, service: str, key_name: str = 'api_key') -> Optional[str]:
+    def __init__(self):
+        self._platform_status = {}
+        self._key_values = {}
+        self._check_all_platforms()
+    
+    def _check_all_platforms(self):
+        """Vérifie TOUTES les plateformes et TOUTES leurs clés"""
+        logger.info("="*60)
+        logger.info("🔍 VÉRIFICATION COMPLÈTE DE TOUTES LES PLATEFORMES")
+        logger.info("="*60)
+        
+        for platform_id, platform_info in self.PLATFORMS.items():
+            platform_name = platform_info['name']
+            platform_type = platform_info['type']
+            keys = platform_info['keys']
+            
+            # Vérifier chaque clé de la plateforme
+            available_keys = []
+            missing_keys = []
+            
+            for key in keys:
+                value = os.environ.get(key)
+                if value and len(value) > 0:
+                    available_keys.append(key)
+                    self._key_values[key] = value
+                else:
+                    missing_keys.append(key)
+            
+            # Déterminer le statut de la plateforme
+            if len(available_keys) == len(keys):
+                status = 'COMPLET'
+                symbol = '✅'
+            elif len(available_keys) > 0:
+                status = 'PARTIEL'
+                symbol = '⚠️'
+            else:
+                status = 'MANQUANT'
+                symbol = '❌'
+            
+            self._platform_status[platform_id] = {
+                'name': platform_name,
+                'type': platform_type,
+                'status': status,
+                'available_keys': available_keys,
+                'missing_keys': missing_keys,
+                'total_keys': len(keys),
+                'available_count': len(available_keys)
+            }
+            
+            logger.info(f"{symbol} {platform_name} ({platform_type}): {status} - "
+                       f"{len(available_keys)}/{len(keys)} clés")
+            
+            if missing_keys:
+                logger.warning(f"   Clés manquantes: {', '.join(missing_keys)}")
+    
+    @lru_cache(maxsize=256)
+    def get_key(self, platform: str, key_name: Optional[str] = None) -> Optional[str]:
         """
         Récupère une clé API de manière sécurisée
         
         Args:
-            service: Nom du service (ex: 'openai', 'stripe')
-            key_name: Nom spécifique de la clé (ex: 'secret', 'public')
+            platform: ID de la plateforme (ex: 'openai', 'stripe')
+            key_name: Nom spécifique de la clé (optionnel)
         
         Returns:
             La clé API ou None si non disponible
         """
-        env_var_map = {
-            'openai': 'OPEN_AI_API_KEY',
-            'stripe_secret': 'STRIPE_API_KEY_SECRET',
-            'stripe_public': 'STRIPE_API_KEY_PUBLIC',
-            'supabase': 'SUPABASE_AUTOQG_API_KEY',
-            'redis': 'REDIS_API_KEY',
-            'github': 'GITHUB_TOKEN_API',
-            'gitlab': 'TOKEN_API_GITLAB',
-            'trello': 'TRELLO_API_KEY',
-            'resend': 'RESEND_API_KEY',
-            'amplitude': 'AMPLITUDE_API_KEY',
-            'logrocket': 'LOG_ROCKET_API_KEY',
-            'agora': 'AGORA_APP_ID',
-            'mapbox': 'MAPBOX_ACCESS_TOKEN',
-            'airtable': 'AIRTABLE_API_KEY',
-            'posthog': 'POSTHOG_API_KEY',
+        if platform not in self.PLATFORMS:
+            logger.error(f"❌ Plateforme inconnue: {platform}")
+            return None
+        
+        platform_info = self.PLATFORMS[platform]
+        keys = platform_info['keys']
+        
+        if key_name:
+            # Recherche d'une clé spécifique
+            if key_name in self._key_values:
+                return self._key_values[key_name]
+            logger.error(f"❌ Clé {key_name} non trouvée pour {platform}")
+            return None
+        else:
+            # Retourne la première clé disponible
+            for key in keys:
+                if key in self._key_values:
+                    return self._key_values[key]
+            logger.error(f"❌ Aucune clé disponible pour {platform}")
+            return None
+    
+    def get_all_keys(self, platform: str) -> Dict[str, str]:
+        """Retourne toutes les clés disponibles pour une plateforme"""
+        if platform not in self.PLATFORMS:
+            return {}
+        
+        result = {}
+        for key in self.PLATFORMS[platform]['keys']:
+            if key in self._key_values:
+                result[key] = self._key_values[key]
+        
+        return result
+    
+    def is_platform_available(self, platform: str, require_complete: bool = False) -> bool:
+        """
+        Vérifie si une plateforme est disponible
+        
+        Args:
+            platform: ID de la plateforme
+            require_complete: Si True, nécessite que TOUTES les clés soient présentes
+        
+        Returns:
+            True si la plateforme est disponible
+        """
+        if platform not in self._platform_status:
+            return False
+        
+        status = self._platform_status[platform]['status']
+        
+        if require_complete:
+            return status == 'COMPLET'
+        else:
+            return status in ['COMPLET', 'PARTIEL']
+    
+    def get_platform_status(self, platform: str) -> Dict[str, Any]:
+        """Retourne le statut détaillé d'une plateforme"""
+        return self._platform_status.get(platform, {})
+    
+    def get_all_platforms_status(self) -> Dict[str, Dict[str, Any]]:
+        """Retourne le statut de toutes les plateformes"""
+        return self._platform_status.copy()
+    
+    def get_platforms_by_type(self, platform_type: str) -> List[str]:
+        """Retourne la liste des plateformes d'un type donné"""
+        return [
+            platform_id 
+            for platform_id, info in self.PLATFORMS.items() 
+            if info['type'] == platform_type
+        ]
+    
+    def get_summary(self) -> Dict[str, Any]:
+        """Génère un résumé complet de l'état des plateformes"""
+        total_platforms = len(self.PLATFORMS)
+        complete = sum(1 for p in self._platform_status.values() if p['status'] == 'COMPLET')
+        partial = sum(1 for p in self._platform_status.values() if p['status'] == 'PARTIEL')
+        missing = sum(1 for p in self._platform_status.values() if p['status'] == 'MANQUANT')
+        
+        total_keys = sum(p['total_keys'] for p in self._platform_status.values())
+        available_keys = sum(p['available_count'] for p in self._platform_status.values())
+        
+        return {
+            'total_platforms': total_platforms,
+            'complete': complete,
+            'partial': partial,
+            'missing': missing,
+            'total_keys': total_keys,
+            'available_keys': available_keys,
+            'completion_rate': (available_keys / total_keys * 100) if total_keys > 0 else 0
         }
-        
-        env_var = env_var_map.get(service)
-        if not env_var:
-            logger.error(f"Service inconnu: {service}")
-            return None
-        
-        value = os.environ.get(env_var)
-        if not value:
-            logger.error(f"Clé API manquante pour {service}")
-            return None
-        
-        return value
-    
-    def is_available(self, service: str) -> bool:
-        """Vérifie si une clé API est disponible"""
-        key = self.get_key(service)
-        return key is not None and len(key) > 0
-    
-    def get_status(self) -> Dict[str, bool]:
-        """Retourne le statut de toutes les clés (disponible ou non)"""
-        return self._available_keys.copy()
 
 
+# Instance globale
 api_key_manager = APIKeyManager()
