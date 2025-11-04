@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Creator - Créez votre API unifiée</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body { background: #f8f9fa; }
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px 0;
+        }
+        .endpoint-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #28a745;
+        }
+        .method-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .get { background: #61affe; color: white; }
+        .post { background: #49cc90; color: white; }
+        .delete { background: #f93e3e; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header text-center">
+        <div class="container">
+            <h1><i class="bi bi-code-square"></i> API Creator</h1>
+            <p>Créez votre propre API unifiée pour gérer toutes vos plateformes</p>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <h3>🎯 Votre API Unifiée</h3>
+                <p>Une seule API pour contrôler toutes vos intégrations</p>
+
+                <div class="endpoint-card">
+                    <span class="method-badge get">GET</span>
+                    <code>/api/v1/platforms</code>
+                    <p class="mt-2 mb-0 text-muted">Liste toutes les plateformes disponibles</p>
+                </div>
+
+                <div class="endpoint-card">
+                    <span class="method-badge get">GET</span>
+                    <code>/api/v1/{platform}/status</code>
+                    <p class="mt-2 mb-0 text-muted">Vérifie le statut d'une plateforme</p>
+                </div>
+
+                <div class="endpoint-card">
+                    <span class="method-badge post">POST</span>
+                    <code>/api/v1/stripe/payment</code>
+                    <p class="mt-2 mb-0 text-muted">Crée un paiement Stripe</p>
+                </div>
+
+                <div class="endpoint-card">
+                    <span class="method-badge post">POST</span>
+                    <code>/api/v1/openai/chat</code>
+                    <p class="mt-2 mb-0 text-muted">Envoie un message à GPT-4</p>
+                </div>
+
+                <div class="endpoint-card">
+                    <span class="method-badge post">POST</span>
+                    <code>/api/v1/resend/email</code>
+                    <p class="mt-2 mb-0 text-muted">Envoie un email</p>
+                </div>
+
+                <h4 class="mt-5">🔨 Créer un nouveau endpoint</h4>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Méthode</label>
+                            <select class="form-select" id="method">
+                                <option>GET</option>
+                                <option>POST</option>
+                                <option>PUT</option>
+                                <option>DELETE</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Path</label>
+                            <input type="text" class="form-control" placeholder="/api/v1/mon-endpoint">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Plateforme cible</label>
+                            <select class="form-select">
+                                <option>Supabase</option>
+                                <option>Stripe</option>
+                                <option>OpenAI</option>
+                                <option>Resend</option>
+                                <option>GitHub</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">Créer l'endpoint</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>🔑 Votre clé API</h5>
+                        <p class="small text-muted">Utilisez cette clé pour authentifier vos requêtes</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="ak_live_xxxxxxxxxx" readonly>
+                            <button class="btn btn-outline-secondary">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-sm btn-link">Régénérer</button>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5>📖 Documentation</h5>
+                        <p class="small">Documentation auto-générée de votre API</p>
+                        <a href="/api/docs" class="btn btn-sm btn-outline-primary w-100">
+                            Voir la doc
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5>🧪 Playground</h5>
+                        <p class="small">Testez vos endpoints en direct</p>
+                        <a href="/api/playground" class="btn btn-sm btn-outline-success w-100">
+                            Ouvrir le playground
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

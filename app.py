@@ -23,7 +23,10 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 db.init_app(app)
 
 from routes.dashboard import dashboard_bp
+from routes.academy import academy_bp
+
 app.register_blueprint(dashboard_bp)
+app.register_blueprint(academy_bp, url_prefix='/academy')
 
 with app.app_context():
     import models
