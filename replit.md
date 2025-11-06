@@ -1,298 +1,411 @@
-# 🔍 Audit Complet des API - Environnement Replit
+# 💕 OneTwo - Application de Rencontre Moderne
 
 ## Vue d'Ensemble
 
-Ce projet est un **environnement de test et d'audit complet** pour valider les interconnexions entre plusieurs API externes configurées sur Replit.
+**OneTwo** est une application de rencontre nouvelle génération qui combine les meilleures fonctionnalités de Tinder et l'esthétique d'Instagram. L'application se concentre sur la mise en relation authentique basée sur des préférences détaillées et des compatibilités psychologiques.
 
-**Objectif**: Tester toutes les API disponibles et générer un rapport d'audit professionnel au format Markdown.
-
-## 📊 Statut Actuel
-
-- **Environnement**: ✅ 100% Opérationnel
-- **API Fonctionnelles**: 8/8 (100%)
-- **Tests Réussis**: 57/57 (100%) 🎉
-- **Tests Exhaustifs**: GitHub (15 tests), GitLab (15 tests)
-- **Interconnexions Validées**: 10/10 (100%)
-- **Secrets Configurés**: 16/16 (100%)
-- **Erreurs**: 0
-- **Warnings**: 0
+**Statut**: ✅ Application Frontend Opérationnelle
 
 ## 🚀 Démarrage Rapide
 
-### Lancer l'Audit
+L'application démarre automatiquement. Vous pouvez voir l'interface dans le webview sur le côté droit de votre écran Replit.
 
-Le workflow "Audit API" est configuré et s'exécute automatiquement. Pour relancer manuellement:
-
+Pour redémarrer manuellement:
 ```bash
-python test_audit_api.py
+cd client && npm run dev
 ```
 
-Un rapport sera automatiquement généré dans `RAPPORT_AUDIT_API_YYYYMMDD_HHMMSS.md`
+## ✨ Fonctionnalités Principales
 
-### Consulter le Rapport
+### 1. Processus d'Inscription Complet (7 Étapes)
 
-Deux rapports sont disponibles:
-1. **Rapport automatique**: `RAPPORT_AUDIT_API_20251025_211028.md` (dernier rapport généré)
-2. **Rapport final enrichi**: `RAPPORT_FINAL_AUDIT_COMPLET.md` (version professionnelle complète)
+#### Étape 1: Bienvenue
+- Écran d'accueil avec présentation de l'app
+- Mise en avant des fonctionnalités clés
+- Design moderne et attractif
 
-## 🔌 API Configurées
+#### Étape 2: Création de Compte
+- **Informations personnelles requises**:
+  - Genre (Homme/Femme)
+  - Prénom et Nom
+  - Email (avec validation)
+  - Mot de passe sécurisé (min 8 caractères, majuscule, minuscule, chiffre)
+  - Date de naissance (18+ uniquement)
+  - Ville
+  
+- **Validations automatiques**:
+  - Format email correct
+  - Force du mot de passe
+  - Âge minimum (18 ans)
 
-### 1. GitHub API
-- **Token**: `GITHUB_TOKEN_API`
-- **Statut**: ✅ 100% Opérationnel (15 tests exhaustifs)
-- **Tests**: Auth, Profile, Repos, Branches, Commits, Issues, PRs, Releases, Webhooks, Orgs, Gists, Stars, Social, Rate Limit
-- **Gestion intelligente**: Permissions manquantes détectées automatiquement
+#### Étape 3: Questions Psychologiques
+- **Timidité**: Oui/Non
+- **Introverti**: Oui/Non
 
-### 2. GitLab API
-- **Token**: `TOKEN_API_GITLAB`
-- **Statut**: ✅ 100% Opérationnel (15 tests exhaustifs)
-- **Tests**: Auth, Projects, Branches, Commits, MRs, Issues, Pipelines, Jobs, Variables, Webhooks, Members, Labels, Milestones, Runners
-- **Gestion intelligente**: Erreurs 403/401 traitées comme normales (permissions requises)
+#### Étape 4: Type de Relation Recherchée
+- 💕 Relation sérieuse
+- 🌙 Plan d'un soir  
+- 💍 Je veux me marier
+- 😊 Rien de sérieux
+- 🎉 Me divertir
 
-### 3. Supabase
-- **URL**: `URL_SUPABASE_AUTOQG`
-- **Keys**: `SUPABASE_ANON_PUBLIC`, `SUPABASE_ROLE_SECRET`, `SUPABASE_AUTOQG_API_KEY`
-- **Statut**: ✅ 100% Opérationnel (test multi-clés automatique)
-- **Capacités**: PostgreSQL, Auth, Storage, Realtime
+#### Étape 5: Orientation Sexuelle
+- 👫 Hétérosexuel(le)
+- 👭 Homosexuel(le)
+- 💗 Bisexuel(le)
+- 🏳️‍⚧️ Transgenre
 
-### 4. Appwrite
-- **Endpoint**: `API_ENDPOINT_APPRWRITE`
-- **Project ID**: `PROJET_ID_APPWRITE`
-- **Statut**: ✅ 100% Opérationnel
-- **Capacités**: NoSQL, Auth, Storage, Functions
+#### Étape 6: Préférences Détaillées (Sliders 0-100%)
 
-### 5. Stripe
-- **Keys**: `STRIPE_API_KEY_SECRET`, `STRIPE_API_KEY_PUBLIC`
-- **Statut**: ✅ 100% Opérationnel
-- **Capacités**: Paiements, Subscriptions, Webhooks
+Chaque préférence est ajustable avec un slider de pourcentage:
 
-### 6. Trello
-- **Key**: `TRELLO_API_KEY`
-- **Token**: `TRELLO_TOKEN`
-- **Statut**: ✅ 100% Opérationnel
-- **Capacités**: Boards, Cards, Lists, Webhooks
+1. **Tatouages**: Sans tatouage → Avec tatouages
+2. **Tabac**: Non-fumeur → Fumeur
+3. **Régime alimentaire**: Végétarien → Omnivore
+4. **Couleur de cheveux**: Blonde → Brune/Rousse
+5. **Taille**: Petite → Grande
+6. **Pilosité corporelle**: Rasé → Poilu
+7. **Morphologie**: Mince → Athlétique/Robuste
+8. **Style vestimentaire**: Casual → Élégant
 
-### 7. Resend
-- **Key**: `RESEND_API_KEY`
-- **Statut**: ✅ 100% Opérationnel
-- **Capacités**: Emails transactionnels (100/jour gratuit)
+**Note**: 50% = Aucune préférence (matching plus large)
 
-## 🔗 Interconnexions Validées
+#### Étape 7: Configuration du Profil
+- **Photos**: Jusqu'à 6 photos
+- **Bio**: Minimum 50 caractères (max 500)
+- **Profession**: Métier
+- **Centres d'intérêt**: Jusqu'à 10 tags
 
-Toutes ces interconnexions ont été testées et fonctionnent:
+### 2. Interface Principale (Style Instagram)
 
-1. **GitHub → Supabase**: Sync repos vers DB
-2. **GitHub → Trello**: Sync issues vers cards
-3. **GitLab → Trello**: Sync MR vers cards
-4. **Stripe → Supabase**: Log paiements
-5. **Stripe → Resend**: Emails confirmation
-6. **Supabase → Resend**: Auth emails
-7. **Appwrite → Stripe**: Auth + Paiements
-8. **Appwrite → Resend**: Notifications
-9. **GitHub → GitLab**: Mirror repos
-10. **Trello → Resend**: Alertes tâches
+#### 🔥 Onglet Découvrir
+- **Cartes de profils** avec:
+  - Photo principale grande taille
+  - Nom, âge, ville
+  - Profession
+  - Bio complète
+  - Centres d'intérêt
+  
+- **Système de swipe** avec 3 boutons:
+  - ✕ Dislike (rouge)
+  - ★ Super Like (bleu)
+  - ♥ Like (vert)
+
+#### 💕 Onglet Matchs
+- Grille de tous vos matchs
+- Indication du temps écoulé depuis le match
+- Information sur le Premium pour débloquer le chat
+
+#### 👤 Onglet Profil
+- Affichage de votre profil complet
+- Photo de profil avec initiales si pas de photo
+- Toutes vos informations
+- Bouton de déconnexion
+
+### 3. Système Premium
+
+#### Option 1: Premium 24h - 1,99€
+- ✓ Chat illimité pendant 24h
+- ✓ Voir qui vous a liké
+- ✓ Super likes illimités
+- ✓ Rewind illimité
+
+#### Option 2: Mise en Avant - 99€
+- ✓ Profil en première position
+- ✓ Visibilité maximale pendant 30 jours
+- ✓ 10x plus de vues
+- ✓ Badge "Profil vedette"
+
+## 🎨 Design & Couleurs
+
+### Palette de Couleurs
+- **Rose principal**: #FF1493 (Deep Pink)
+- **Rose clair**: #FF69B4 (Hot Pink)
+- **Noir**: #000000
+- **Blanc**: #FFFFFF
+- **Gris foncé**: #333333
+- **Gris clair**: #666666
+
+### Logo
+- Design yin-yang avec deux flammes
+- Couleurs: Noir, Rose et Blanc
+- Symbolise l'équilibre et la passion
+
+### Typographie
+- Font: System UI (San Francisco, Segoe UI, Roboto)
+- Style moderne et lisible
+- Hiérarchie claire des titres
 
 ## 📁 Structure du Projet
 
 ```
 .
-├── test_audit_api.py                      # Script d'audit principal
-├── RAPPORT_AUDIT_API_20251025_194534.md   # Rapport auto-généré
-├── RAPPORT_FINAL_AUDIT_COMPLET.md         # Rapport professionnel
-├── replit.md                              # Ce fichier
-├── .gitignore                              # Configuration Git
-├── .replit                                 # Configuration Replit
-├── pyproject.toml                          # Dépendances Python (uv)
-├── uv.lock                                 # Lock file
-└── .pythonlibs/                            # Virtual env
+├── client/                          # Application React Frontend
+│   ├── src/
+│   │   ├── components/             # Composants React
+│   │   │   ├── Logo.jsx           # Logo OneTwo
+│   │   │   ├── WelcomeScreen.jsx  # Écran d'accueil
+│   │   │   ├── AuthChoice.jsx     # Choix inscription/connexion
+│   │   │   ├── SignupForm.jsx     # Formulaire d'inscription
+│   │   │   ├── LoginForm.jsx      # Formulaire de connexion
+│   │   │   ├── PsychologyQuestions.jsx  # Questions psychologiques
+│   │   │   ├── RelationshipType.jsx     # Type de relation
+│   │   │   ├── SexualOrientation.jsx    # Orientation sexuelle
+│   │   │   ├── DetailedPreferences.jsx  # Sliders de préférences
+│   │   │   ├── ProfileSetup.jsx         # Configuration profil
+│   │   │   └── MainApp.jsx              # App principale
+│   │   ├── App.jsx                # Composant principal
+│   │   ├── App.css                # Styles globaux
+│   │   └── index.css              # Styles de base
+│   ├── package.json               # Dépendances npm
+│   └── vite.config.js             # Configuration Vite
+│
+├── app.py                          # Backend Flask (à connecter)
+├── pyproject.toml                  # Dépendances Python
+└── replit.md                       # Cette documentation
 ```
 
 ## 🛠️ Technologies Utilisées
 
-- **Langage**: Python 3.11
-- **Package Manager**: uv
-- **Framework Web**: Flask 3.1.2
-- **API Clients**: 
-  - PyGithub 2.8.1
-  - python-gitlab 6.5.0
-  - supabase 2.22.2
-  - appwrite 13.4.1
-  - stripe 13.0.1
-  - resend 2.17.0
-  - aiohttp 3.13.1
+### Frontend
+- **Framework**: React 18
+- **Build Tool**: Vite 7.2.1
+- **Language**: JavaScript (JSX)
+- **Styling**: CSS pur (pas de frameworks CSS)
+- **État**: React useState & localStorage
 
-## 🎯 Applications Possibles
+### Backend (À connecter)
+- **Framework**: Flask 3.1.2
+- **Database**: PostgreSQL (via Supabase)
+- **Auth**: Supabase Auth
+- **Payment**: Stripe
+- **Email**: Resend
+- **Storage**: Supabase Storage (pour photos)
 
-Avec cet environnement, vous pouvez développer:
+### Services Externes Disponibles
+- ✅ Supabase (Database & Auth)
+- ✅ Stripe (Paiements Premium)
+- ✅ Resend (Emails)
+- ✅ Redis (Cache/Sessions)
+- ✅ OpenAI (Suggestions de profils?)
+- ✅ Mapbox (Géolocalisation)
 
-### 1. Applications SaaS
-- Auth: Supabase/Appwrite
-- Database: Supabase PostgreSQL
-- Paiements: Stripe
-- Emails: Resend
-- **Temps dev**: 5-7 jours
+## 🔗 Prochaines Étapes de Développement
 
-### 2. Bots d'Automation
-- GitHub issues → Trello cards
-- GitLab CI/CD → Notifications
-- Scheduled tasks
-- **Temps dev**: 1-2 jours
+### Phase 1: Backend API (Prioritaire)
+1. **API d'authentification**
+   - Endpoint signup
+   - Endpoint login
+   - Gestion JWT tokens
+   - Stockage profils dans Supabase
 
-### 3. APIs & Microservices
-- REST APIs avec Flask
-- Webhooks receivers
-- Data pipelines
-- **Temps dev**: 2-3 jours
+2. **API de profils**
+   - CRUD profils utilisateurs
+   - Upload photos (Supabase Storage)
+   - Mise à jour préférences
 
-## 📝 Exemples de Code
+3. **API de matching**
+   - Algorithme de compatibilité
+   - Calcul score basé sur préférences
+   - Génération suggestions de profils
 
-### Exemple 1: Bot GitHub → Trello
+4. **API de swipe & matchs**
+   - Enregistrement likes/dislikes
+   - Détection matchs mutuels
+   - Notifications matchs
 
-```python
-from flask import Flask, request
-import os
+### Phase 2: Chat Temps Réel
+1. WebSockets ou Supabase Realtime
+2. Messages texte
+3. Notifications temps réel
+4. Historique conversations
 
-app = Flask(__name__)
+### Phase 3: Paiement Premium
+1. Intégration Stripe Checkout
+2. Webhooks Stripe
+3. Gestion abonnements
+4. Déblocage fonctionnalités premium
 
-@app.route('/webhook/github', methods=['POST'])
-def github_webhook():
-    issue = request.json['issue']
-    
-    # Create Trello card
-    create_trello_card(
-        board_id=os.getenv('TRELLO_BOARD_ID'),
-        title=issue['title'],
-        desc=issue['body']
-    )
-    
-    return {'status': 'ok'}
+### Phase 4: Fonctionnalités Avancées
+1. Géolocalisation (Mapbox)
+2. Filtres de recherche avancés
+3. Boost de profil
+4. Super likes
+5. Rewind (annuler dernier swipe)
+6. Voir qui vous a liké
+
+### Phase 5: Analytics & Optimisation
+1. Tracking événements (Amplitude/Posthog)
+2. Tests A/B
+3. Optimisation algorithme matching
+4. Performance monitoring
+
+## 💾 Stockage des Données
+
+### LocalStorage (Actuel - Temporaire)
+Actuellement, les données sont stockées dans le navigateur:
+- Clé: `onetwo_user`
+- Données: Profil utilisateur complet
+- **Limitation**: Données perdues si cache effacé
+
+### Migration vers Backend (À faire)
+Structure de base de données Supabase:
+
+```sql
+-- Table users
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  email VARCHAR UNIQUE NOT NULL,
+  password_hash VARCHAR NOT NULL,
+  first_name VARCHAR NOT NULL,
+  last_name VARCHAR NOT NULL,
+  birth_date DATE NOT NULL,
+  city VARCHAR NOT NULL,
+  gender VARCHAR NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Table profiles
+CREATE TABLE profiles (
+  user_id UUID PRIMARY KEY REFERENCES users(id),
+  bio TEXT,
+  profession VARCHAR,
+  photos TEXT[], -- URLs des photos
+  interests TEXT[],
+  is_shy BOOLEAN,
+  is_introverted BOOLEAN,
+  relationship_type VARCHAR,
+  sexual_orientation VARCHAR,
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Table preferences
+CREATE TABLE preferences (
+  user_id UUID PRIMARY KEY REFERENCES users(id),
+  tattoos INT, -- 0-100
+  smoking INT,
+  diet INT,
+  hair_color INT,
+  height INT,
+  body_hair INT,
+  body_type INT,
+  style INT
+);
+
+-- Table swipes
+CREATE TABLE swipes (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id),
+  target_user_id UUID REFERENCES users(id),
+  action VARCHAR, -- 'like', 'dislike', 'super_like'
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(user_id, target_user_id)
+);
+
+-- Table matches
+CREATE TABLE matches (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user1_id UUID REFERENCES users(id),
+  user2_id UUID REFERENCES users(id),
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE(user1_id, user2_id)
+);
+
+-- Table messages
+CREATE TABLE messages (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  match_id UUID REFERENCES matches(id),
+  sender_id UUID REFERENCES users(id),
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Table premium_subscriptions
+CREATE TABLE premium_subscriptions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id),
+  type VARCHAR, -- '24h', 'boost'
+  stripe_payment_id VARCHAR,
+  amount DECIMAL,
+  starts_at TIMESTAMP,
+  ends_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT NOW()
+);
 ```
 
-### Exemple 2: SaaS avec Stripe + Supabase
+## 🔐 Sécurité
 
-```python
-from flask import Flask, request
-from supabase import create_client
-import stripe
+### Validations Frontend
+- ✅ Email format
+- ✅ Mot de passe fort (8+ chars, maj, min, chiffre)
+- ✅ Âge minimum 18 ans
+- ✅ Champs requis
 
-app = Flask(__name__)
-stripe.api_key = os.getenv('STRIPE_API_KEY_SECRET')
-supabase = create_client(
-    os.getenv('URL_SUPABASE_AUTOQG'),
-    os.getenv('SUPABASE_AUTOQG_API_KEY')
-)
+### À implémenter (Backend)
+- [ ] Hash mots de passe (bcrypt)
+- [ ] Tokens JWT avec expiration
+- [ ] Rate limiting API
+- [ ] CORS configuration
+- [ ] Validation côté serveur
+- [ ] Protection CSRF
+- [ ] Sanitization inputs
 
-@app.route('/webhook/stripe', methods=['POST'])
-def stripe_webhook():
-    event = stripe.Webhook.construct_event(
-        request.data,
-        request.headers['Stripe-Signature'],
-        os.getenv('STRIPE_WEBHOOK_SECRET')
-    )
-    
-    if event.type == 'payment_intent.succeeded':
-        # Log payment in Supabase
-        supabase.table('payments').insert({
-            'stripe_payment_id': event.data.object.id,
-            'amount': event.data.object.amount,
-            'status': 'succeeded'
-        }).execute()
-    
-    return {'status': 'ok'}
-```
+## 📱 Responsive Design
 
-## 🔧 Maintenance
+L'application est entièrement responsive:
+- **Mobile**: Design optimisé pour smartphones
+- **Tablette**: Adaptation automatique
+- **Desktop**: Max-width 500px pour simuler mobile
 
-### Mettre à Jour les Dépendances
+## 🎯 Public Cible
 
-```bash
-uv add <package-name>@latest
-```
+- **Âge**: 18-35 ans
+- **Profil**: Utilisateurs cherchant relations authentiques
+- **Niche**: Focus sur préférences détaillées et compatibilité
 
-### Relancer l'Audit
+## 📊 Métriques de Succès (KPIs)
 
-```bash
-python test_audit_api.py
-```
+### Phase MVP
+- [ ] 100 utilisateurs inscrits
+- [ ] 50 profils complets
+- [ ] 200 swipes/jour
+- [ ] 20 matchs/jour
 
-### Voir les Logs
+### Phase Croissance
+- [ ] 1000 utilisateurs actifs
+- [ ] 500 matchs/semaine
+- [ ] 10% conversion Premium
+- [ ] 50 conversations actives/jour
 
-```bash
-cat /tmp/logs/Audit_API_*.log
-```
+## 🚀 Lancement
 
-## ✅ Améliorations Récentes (2025-10-25)
+### Checklist Avant Lancement
+- [ ] Backend API opérationnel
+- [ ] Tests de charge
+- [ ] Politique de confidentialité
+- [ ] Conditions d'utilisation
+- [ ] Modération contenu
+- [ ] Support client
+- [ ] Payment processing testé
+- [ ] Email notifications configurées
 
-### 1. Tests Exhaustifs GitHub & GitLab
-- **15 tests par API** au lieu de 2-3 tests basiques
-- Couverture complète de toutes les fonctionnalités majeures
-- Gestion stricte des erreurs (vraies erreurs détectées, pas de masquage)
-- Gestion intelligente des permissions (403/401 = normal)
+## 🤝 Contribution & Développement
 
-### 2. Correction du Warning Supabase
-- **Test automatique** de toutes les clés disponibles
-- Sélection intelligente de la clé qui fonctionne
-- Plus aucun warning API
+### Workflow de Développement
+1. Développement local sur Replit
+2. Tests manuels sur chaque fonctionnalité
+3. Validation UX/UI
+4. Merge vers production
 
-### 3. Qualité du Code
-- **Slicing PyGithub corrigé**: `list()[:5]` au lieu de `list([:5])`
-- **Gestion stricte exceptions**: Erreurs réelles vs attendues
-- **Architecture validée** par review experte
-
-## 📊 Quotas et Limitations
-
-### Quotas Gratuits
-
-| Service | Limite | Action si dépassement |
-|---------|--------|----------------------|
-| Supabase | 500MB DB, 1GB Storage | Upgrade Pro ($25/mois) |
-| Resend | 100 emails/jour | Upgrade Pro ($20/mois) |
-| GitHub | 5000 req/h | OK pour dev |
-| Trello | 300 req/10s | OK pour dev |
-
-### Limitations Système (Replit)
-
-- **RAM**: ~512MB-1GB
-- **CPU**: Partagé
-- **Storage**: Non persistant (utiliser Supabase Storage)
-- **Ports**: 5000 uniquement
-
-## 🚀 Prochaines Étapes
-
-### Recommandations Immédiates
-
-1. ✅ Corriger l'erreur GitHub (30 min)
-2. ✅ Vérifier les clés Supabase (15 min)
-3. 🔄 Choisir un type d'application à développer
-
-### Court Terme (Ce Mois)
-
-1. 🔄 Implémenter rate limiting
-2. 🔄 Setup logging centralisé
-3. 🔄 Tests E2E
-
-### Moyen Terme (Ce Trimestre)
-
-1. 🔄 Évaluer upgrade vers plans payants
-2. 🔄 Implémenter queue system (Celery + Redis)
-3. 🔄 Setup CI/CD
-
-## 📚 Documentation
-
-Pour plus de détails, consulter:
-- **Rapport complet**: `RAPPORT_FINAL_AUDIT_COMPLET.md`
-- **Rapport automatique**: `RAPPORT_AUDIT_API_20251025_194534.md`
-
-## 🤝 Contribution
-
-Pour modifier le script d'audit:
-1. Éditer `test_audit_api.py`
-2. Relancer avec `python test_audit_api.py`
-3. Vérifier le nouveau rapport généré
+### Standards de Code
+- Code en anglais (variables, fonctions)
+- Commentaires en français si nécessaire
+- Composants React fonctionnels
+- Props clairement définies
 
 ---
 
-**Date de création**: 2025-10-25  
-**Dernière mise à jour**: 2025-10-25 21:13  
-**Version**: 2.0.0  
-**Statut**: ✅ 100% Opérationnel - 57/57 tests - 0 erreurs - 0 warnings
+**Date de création**: 2025-11-06  
+**Dernière mise à jour**: 2025-11-06  
+**Version**: 1.0.0  
+**Statut**: ✅ Frontend Opérationnel - Backend à connecter
