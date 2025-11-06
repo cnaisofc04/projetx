@@ -1,4 +1,4 @@
-modules = ["python-3.11", "web"]
+modules = ["python-3.11", "web", "nodejs-20"]
 [agent]
 expertMode = true
 
@@ -16,22 +16,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Audit API"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "Start application"
-
-[[workflows.workflow]]
-name = "Audit API"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python test_audit_api.py"
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [[workflows.workflow]]
 name = "Test API Basic"
@@ -82,13 +67,13 @@ args = "python test_secrets_ultra_complet_v2.py"
 name = "Start application"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app"
-waitForPort = 5000
-
 [workflows.workflow.metadata]
 outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd client && npm run dev"
+waitForPort = 5000
 
 [[workflows.workflow]]
 name = "Test Modulaire Complet"
@@ -108,9 +93,5 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 41207
-externalPort = 3001
-
-[[ports]]
-localPort = 41881
+localPort = 38875
 externalPort = 3000
