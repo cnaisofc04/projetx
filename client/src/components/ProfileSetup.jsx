@@ -5,7 +5,8 @@ import ChipSelector from './shared/ChipSelector';
 
 export default function ProfileSetup({ user, onComplete }) {
   const [photos, setPhotos] = useState([]);
-  const [profession, setProfession] = useState('');
+  const [professions, setProfessions] = useState([]);
+  const [customProfession, setCustomProfession] = useState('');
   const [professionalStatus, setProfessionalStatus] = useState([]);
   const [interests, setInterests] = useState([]);
   const [customInterest, setCustomInterest] = useState('');
@@ -38,9 +39,15 @@ export default function ProfileSetup({ user, onComplete }) {
     { id: 'photography', label: 'Photo', icon: '📸' }
   ];
 
-  const addCustomItem = (value, list, setter, inputSetter) => {
+  const addCustomItem = (value, list, setter, inputSetter, icon = '✨') => {
     if (value.trim() && list.length < 10) {
-      setter([...list, value.trim()]);
+      const newItem = {
+        id: `custom_${Date.now()}_${Math.random()}`,
+        label: value.trim(),
+        icon: icon,
+        isCustom: true
+      };
+      setter([...list, newItem]);
       inputSetter('');
     }
   };
@@ -50,10 +57,10 @@ export default function ProfileSetup({ user, onComplete }) {
   };
 
   const handleSubmit = () => {
-    if (photos.length > 0 && profession && professionalStatus.length > 0) {
+    if (photos.length > 0 && professions.length > 0 && professionalStatus.length > 0) {
       onComplete({
         photos,
-        profession,
+        professions,
         professionalStatus,
         interests,
         favoriteBooks,
@@ -63,7 +70,7 @@ export default function ProfileSetup({ user, onComplete }) {
     }
   };
 
-  const canSubmit = photos.length > 0 && profession && professionalStatus.length > 0;
+  const canSubmit = photos.length > 0 && professions.length > 0 && professionalStatus.length > 0;
   const currentStepNumber = user?.gender === 'woman' ? '8/9' : '7/9';
 
   return (
@@ -86,34 +93,71 @@ export default function ProfileSetup({ user, onComplete }) {
         </div>
 
         <div className="profile-section">
-          <h3>Profession *</h3>
-          <input
-            type="text"
-            value={profession}
-            onChange={(e) => setProfession(e.target.value)}
-            placeholder="Ex: Développeur, Professeur, Designer..."
-          />
+          <h3>Profession(s) *</h3>
+          <div className="tags-list">
+            {professions.map((prof, index) => (
+              <span key={prof.id || index} className="tag">
+                {prof.icon} {prof.label}
+                <button type="button" onClick={() => removeItem(index, professions, setProfessions)}>×</button>
+              </span>
+            ))}
+          </div>
+          <div className="custom-input-section">
+            <input
+              type="text"
+              value={customProfession}
+              onChange={(e) => setCustomProfession(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customProfession, professions, setProfessions, setCustomProfession, '💼'))}
+              placeholder="Ex: Développeur, Professeur, Designer..."
+            />
+            <button
+              type="button"
+              onClick={() => addCustomItem(customProfession, professions, setProfessions, setCustomProfession, '💼')}
+              disabled={professions.length >= 5}
+            >
+              Ajouter
+            </button>
+          </div>
         </div>
 
         <div className="profile-section">
           <h3>Centres d'intérêt</h3>
           <ChipSelector
             options={interestPresets}
-            selected={interests}
-            onToggle={setInterests}
+            selected={interests.filter(i => !i.isCustom).map(i => i.id || i)}
+            onToggle={(selected) => {
+              const customInterests = interests.filter(i => i.isCustom);
+              const presetInterests = selected.map(id => 
+                interestPresets.find(preset => preset.id === id) || id
+              );
+              setInterests([...presetInterests, ...customInterests]);
+            }}
             maxSelection={10}
           />
+          <div className="tags-list">
+            {interests.map((interest, index) => {
+              if (typeof interest === 'object' && interest.label) {
+                return (
+                  <span key={interest.id || index} className="tag">
+                    {interest.icon} {interest.label}
+                    <button type="button" onClick={() => removeItem(index, interests, setInterests)}>×</button>
+                  </span>
+                );
+              }
+              return null;
+            })}
+          </div>
           <div className="custom-input-section">
             <input
               type="text"
               value={customInterest}
               onChange={(e) => setCustomInterest(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customInterest, interests, setInterests, setCustomInterest))}
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customInterest, interests, setInterests, setCustomInterest, '✨'))}
               placeholder="Ajouter un intérêt personnalisé"
             />
             <button
               type="button"
-              onClick={() => addCustomItem(customInterest, interests, setInterests, setCustomInterest)}
+              onClick={() => addCustomItem(customInterest, interests, setInterests, setCustomInterest, '✨')}
               disabled={interests.length >= 10}
             >
               Ajouter
@@ -125,8 +169,8 @@ export default function ProfileSetup({ user, onComplete }) {
           <h3>Livres préférés</h3>
           <div className="tags-list">
             {favoriteBooks.map((book, index) => (
-              <span key={index} className="tag">
-                📚 {book}
+              <span key={book.id || index} className="tag">
+                {book.icon} {book.label}
                 <button type="button" onClick={() => removeItem(index, favoriteBooks, setFavoriteBooks)}>×</button>
               </span>
             ))}
@@ -136,12 +180,12 @@ export default function ProfileSetup({ user, onComplete }) {
               type="text"
               value={customBook}
               onChange={(e) => setCustomBook(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customBook, favoriteBooks, setFavoriteBooks, setCustomBook))}
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customBook, favoriteBooks, setFavoriteBooks, setCustomBook, '📚'))}
               placeholder="Ex: 1984, Le Petit Prince..."
             />
             <button
               type="button"
-              onClick={() => addCustomItem(customBook, favoriteBooks, setFavoriteBooks, setCustomBook)}
+              onClick={() => addCustomItem(customBook, favoriteBooks, setFavoriteBooks, setCustomBook, '📚')}
               disabled={favoriteBooks.length >= 10}
             >
               Ajouter
@@ -153,8 +197,8 @@ export default function ProfileSetup({ user, onComplete }) {
           <h3>Films préférés</h3>
           <div className="tags-list">
             {favoriteMovies.map((movie, index) => (
-              <span key={index} className="tag">
-                🎬 {movie}
+              <span key={movie.id || index} className="tag">
+                {movie.icon} {movie.label}
                 <button type="button" onClick={() => removeItem(index, favoriteMovies, setFavoriteMovies)}>×</button>
               </span>
             ))}
@@ -164,12 +208,12 @@ export default function ProfileSetup({ user, onComplete }) {
               type="text"
               value={customMovie}
               onChange={(e) => setCustomMovie(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customMovie, favoriteMovies, setFavoriteMovies, setCustomMovie))}
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customMovie, favoriteMovies, setFavoriteMovies, setCustomMovie, '🎬'))}
               placeholder="Ex: Inception, La La Land..."
             />
             <button
               type="button"
-              onClick={() => addCustomItem(customMovie, favoriteMovies, setFavoriteMovies, setCustomMovie)}
+              onClick={() => addCustomItem(customMovie, favoriteMovies, setFavoriteMovies, setCustomMovie, '🎬')}
               disabled={favoriteMovies.length >= 10}
             >
               Ajouter
@@ -181,8 +225,8 @@ export default function ProfileSetup({ user, onComplete }) {
           <h3>Musique / Artistes préférés</h3>
           <div className="tags-list">
             {favoriteMusic.map((artist, index) => (
-              <span key={index} className="tag">
-                🎵 {artist}
+              <span key={artist.id || index} className="tag">
+                {artist.icon} {artist.label}
                 <button type="button" onClick={() => removeItem(index, favoriteMusic, setFavoriteMusic)}>×</button>
               </span>
             ))}
@@ -192,12 +236,12 @@ export default function ProfileSetup({ user, onComplete }) {
               type="text"
               value={customMusic}
               onChange={(e) => setCustomMusic(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customMusic, favoriteMusic, setFavoriteMusic, setCustomMusic))}
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomItem(customMusic, favoriteMusic, setFavoriteMusic, setCustomMusic, '🎵'))}
               placeholder="Ex: Beyoncé, Daft Punk, Mozart..."
             />
             <button
               type="button"
-              onClick={() => addCustomItem(customMusic, favoriteMusic, setFavoriteMusic, setCustomMusic)}
+              onClick={() => addCustomItem(customMusic, favoriteMusic, setFavoriteMusic, setCustomMusic, '🎵')}
               disabled={favoriteMusic.length >= 10}
             >
               Ajouter
