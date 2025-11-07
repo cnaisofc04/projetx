@@ -18,10 +18,28 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('onetwo_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-      setCurrentScreen('main');
+    // Nettoyer le localStorage des anciennes données
+    try {
+      const savedUser = localStorage.getItem('onetwo_user');
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+        setCurrentScreen('main');
+      }
+
+      // Nettoyer les clés inutiles
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key !== 'onetwo_user' && key.includes('temp')) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach(key => localStorage.removeItem(key));
+    } catch (error) {
+      console.error('Erreur de chargement:', error);
+      // Vider complètement le localStorage en cas d'erreur
+      localStorage.clear();
     }
   }, []);
 
@@ -36,9 +54,9 @@ function App() {
       case 'welcome':
         return <WelcomeScreen onContinue={() => setCurrentScreen('auth-choice')} />;
       case 'auth-choice':
-        return <AuthChoice 
-          onSignup={() => setCurrentScreen('signup')} 
-          onLogin={() => setCurrentScreen('login')} 
+        return <AuthChoice
+          onSignup={() => setCurrentScreen('signup')}
+          onLogin={() => setCurrentScreen('login')}
         />;
       case 'signup':
         return <SignupForm onNext={(userData) => {
@@ -51,31 +69,31 @@ function App() {
           setCurrentScreen('main');
         }} onBack={() => setCurrentScreen('auth-choice')} />;
       case 'psychology':
-        return <PsychologyQuestions 
+        return <PsychologyQuestions
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});
             setCurrentScreen('relationship-type');
-          }} 
+          }}
         />;
       case 'relationship-type':
-        return <RelationshipType 
+        return <RelationshipType
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});
             setCurrentScreen('sexual-orientation');
-          }} 
+          }}
         />;
       case 'sexual-orientation':
-        return <SexualOrientation 
+        return <SexualOrientation
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});
             setCurrentScreen('detailed-preferences');
-          }} 
+          }}
         />;
       case 'detailed-preferences':
-        return <DetailedPreferences 
+        return <DetailedPreferences
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});
@@ -84,33 +102,56 @@ function App() {
             } else {
               setCurrentScreen('privacy-zone');
             }
-          }} 
+          }}
         />;
       case 'beard-preference':
-        return <BeardPreference 
+        return <BeardPreference
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});
             setCurrentScreen('privacy-zone');
-          }} 
+          }}
         />;
       case 'privacy-zone':
-        return <PrivacyZone 
+        return <PrivacyZone
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});
             setCurrentScreen('profile-setup');
-          }} 
+          }}
         />;
       case 'profile-setup':
-        return <ProfileSetup 
+        return <ProfileSetup
           user={user}
           onComplete={(data) => {
             const completeUser = {...user, ...data};
             setUser(completeUser);
-            localStorage.setItem('onetwo_user', JSON.stringify(completeUser));
-            setCurrentScreen('main');
-          }} 
+
+            // Nettoyer le localStorage avant de sauvegarder
+            try {
+              // Supprimer les anciennes données inutiles
+              localStorage.removeItem('tempUserData');
+              localStorage.removeItem('tempProfileData');
+
+              // Sauvegarder uniquement les données essentielles
+              const essentialUser = {
+                ...completeUser,
+                profile: {
+                  ...data, // Utiliser 'data' car il contient les nouvelles informations du profil
+                  // Réduire la taille des photos en ne gardant que les URLs
+                  photos: data.photos?.slice(0, 6) || []
+                }
+              };
+
+              localStorage.setItem('onetwo_user', JSON.stringify(essentialUser));
+              setCurrentScreen('main');
+            } catch (error) {
+              console.error('Erreur de sauvegarde:', error);
+              // En cas d'erreur, continuer quand même sans localStorage
+              alert('⚠️ Impossible de sauvegarder toutes les données. Vous pourrez continuer mais vos données seront perdues au rechargement.');
+              setCurrentScreen('main');
+            }
+          }}
         />;
       case 'main':
         return <MainApp user={user} onLogout={handleLogout} />;
