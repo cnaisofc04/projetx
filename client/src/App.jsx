@@ -9,6 +9,7 @@ import RelationshipType from './components/RelationshipType';
 import SexualOrientation from './components/SexualOrientation';
 import Religion from './components/Religion';
 import EyeColor from './components/EyeColor';
+import HairColor from './components/HairColor';
 import DetailedPreferences from './components/DetailedPreferences';
 import BeardPreference from './components/BeardPreference';
 import PrivacyZone from './components/PrivacyZone';
@@ -83,6 +84,14 @@ function App() {
         />;
       case 'eye-color':
         return <EyeColor
+          user={user}
+          onNext={(data) => {
+            setUser({...user, ...data});
+            setCurrentScreen('hair-color');
+          }}
+        />;
+      case 'hair-color':
+        return <HairColor
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});
