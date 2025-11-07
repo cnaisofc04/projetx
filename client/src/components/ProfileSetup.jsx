@@ -75,17 +75,36 @@ export default function ProfileSetup({ user, onComplete }) {
     setter(list.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (photos.length > 0 && professions.length > 0 && professionalStatus.length > 0) {
-      onComplete({
-        photos,
-        professions,
-        professionalStatus,
-        interests,
-        favoriteBooks,
-        favoriteMovies,
-        favoriteMusic
-      });
+      try {
+        // Import du service Supabase
+        const { saveProfile } = await import('../services/supabaseClient');
+        
+        // Sauvegarder dans Supabase au lieu de localStorage
+        await saveProfile(user.id || user.email, {
+          photos,
+          professions,
+          professionalStatus,
+          interests,
+          favoriteBooks,
+          favoriteMovies,
+          favoriteMusic
+        });
+
+        onComplete({
+          photos,
+          professions,
+          professionalStatus,
+          interests,
+          favoriteBooks,
+          favoriteMovies,
+          favoriteMusic
+        });
+      } catch (error) {
+        console.error('Erreur sauvegarde Supabase:', error);
+        alert('⚠️ Erreur lors de la sauvegarde. Veuillez réessayer.');
+      }
     }
   };
 
