@@ -39,17 +39,36 @@ export default function ProfileSetup({ user, onComplete }) {
     { id: 'photography', label: 'Photo', icon: '📸' }
   ];
 
+  const alphabeticRegex = /^[a-zA-ZÀ-ÿ\s'-]+$/;
+
+  const validateAlphabetic = (value) => {
+    return alphabeticRegex.test(value);
+  };
+
   const addCustomItem = (value, list, setter, inputSetter, icon = '✨') => {
-    if (value.trim() && list.length < 10) {
-      const newItem = {
-        id: `custom_${Date.now()}_${Math.random()}`,
-        label: value.trim(),
-        icon: icon,
-        isCustom: true
-      };
-      setter([...list, newItem]);
-      inputSetter('');
+    const trimmedValue = value.trim();
+    
+    if (!trimmedValue) {
+      return;
     }
+    
+    if (!validateAlphabetic(trimmedValue)) {
+      alert('⚠️ Seuls les lettres, espaces, tirets et apostrophes sont autorisés. Pas de chiffres ou caractères spéciaux.');
+      return;
+    }
+    
+    if (list.length >= 10) {
+      return;
+    }
+    
+    const newItem = {
+      id: `custom_${Date.now()}_${Math.random()}`,
+      label: trimmedValue,
+      icon: icon,
+      isCustom: true
+    };
+    setter([...list, newItem]);
+    inputSetter('');
   };
 
   const removeItem = (index, list, setter) => {

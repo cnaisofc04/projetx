@@ -15,12 +15,24 @@ export default function SignupForm({ onNext }) {
 
   const [errors, setErrors] = useState({});
 
+  const alphabeticRegex = /^[a-zA-ZÀ-ÿ\s'-]+$/;
+
   const validate = () => {
     const newErrors = {};
 
     if (!formData.gender) newErrors.gender = 'Veuillez sélectionner votre genre';
-    if (!formData.firstName) newErrors.firstName = 'Prénom requis';
-    if (!formData.lastName) newErrors.lastName = 'Nom requis';
+    
+    if (!formData.firstName) {
+      newErrors.firstName = 'Prénom requis';
+    } else if (!alphabeticRegex.test(formData.firstName)) {
+      newErrors.firstName = 'Seuls les lettres, espaces et tirets sont autorisés';
+    }
+    
+    if (!formData.lastName) {
+      newErrors.lastName = 'Nom requis';
+    } else if (!alphabeticRegex.test(formData.lastName)) {
+      newErrors.lastName = 'Seuls les lettres, espaces et tirets sont autorisés';
+    }
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email) {
@@ -50,7 +62,11 @@ export default function SignupForm({ onNext }) {
       }
     }
 
-    if (!formData.city) newErrors.city = 'Ville requise';
+    if (!formData.city) {
+      newErrors.city = 'Ville requise';
+    } else if (!alphabeticRegex.test(formData.city)) {
+      newErrors.city = 'Seuls les lettres, espaces et tirets sont autorisés';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
