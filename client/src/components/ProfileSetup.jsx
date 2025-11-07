@@ -47,20 +47,20 @@ export default function ProfileSetup({ user, onComplete }) {
 
   const addCustomItem = (value, list, setter, inputSetter, icon = '✨') => {
     const trimmedValue = value.trim();
-    
+
     if (!trimmedValue) {
       return;
     }
-    
+
     if (!validateAlphabetic(trimmedValue)) {
       alert('⚠️ Seuls les lettres, espaces, tirets et apostrophes sont autorisés. Pas de chiffres ou caractères spéciaux.');
       return;
     }
-    
+
     if (list.length >= 10) {
       return;
     }
-    
+
     const newItem = {
       id: `custom_${Date.now()}_${Math.random()}`,
       label: trimmedValue,
@@ -80,7 +80,7 @@ export default function ProfileSetup({ user, onComplete }) {
       try {
         // Import du service Supabase
         const { saveProfile } = await import('../services/supabaseClient');
-        
+
         // Sauvegarder dans Supabase au lieu de localStorage
         await saveProfile(user.id || user.email, {
           photos,
@@ -109,7 +109,7 @@ export default function ProfileSetup({ user, onComplete }) {
   };
 
   const canSubmit = photos.length > 0 && professions.length > 0 && professionalStatus.length > 0;
-  const currentStepNumber = user?.gender === 'woman' ? '8/9' : '7/9';
+  const currentStepNumber = user?.gender === 'woman' ? '10-11/11' : '9-11/11';
 
   return (
     <div className="profile-setup">

@@ -35,7 +35,7 @@ export default function RelationshipType({ user, onNext }) {
       <div className="form-content wide">
         <Logo size={60} />
         <h2>Que recherchez-vous ?</h2>
-        <p className="step-indicator">Étape 3/9</p>
+        <p className="step-indicator">Étape 3/11</p>
         <p className="subtitle">Ajustez votre intérêt pour chaque type de relation (50% = neutre)</p>
 
         <div className="preferences-container">

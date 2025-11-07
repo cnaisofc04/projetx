@@ -25,7 +25,7 @@ export default function DetailedPreferences({ user, onNext }) {
       <div className="form-content wide">
         <Logo size={60} />
         <h2>Vos préférences détaillées</h2>
-        <p className="step-indicator">Étape 5/9</p>
+        <p className="step-indicator">Étape 7/11</p>
         <p className="subtitle">
           Ajustez chaque slider selon vos préférences (50% = aucune préférence)
         </p>
@@ -57,7 +57,7 @@ export default function DetailedPreferences({ user, onNext }) {
 
           <div className="hair-section">
             <h3 className="section-title">Couleur de cheveux</h3>
-            
+
             <SliderPreference
               label="Cheveux blonds"
               value={preferences.hairBlonde}

@@ -24,7 +24,7 @@ export default function PsychologyQuestions({ user, onNext }) {
       <div className="form-content">
         <Logo size={60} />
         <h2>Apprenons à vous connaître</h2>
-        <p className="step-indicator">Étape 2/9</p>
+        <p className="step-indicator">Étape 2/11</p>
 
         <div className="questions-container">
           <div className="question-card">
@@ -72,8 +72,8 @@ export default function PsychologyQuestions({ user, onNext }) {
           </div>
         </div>
 
-        <button 
-          className="primary-button" 
+        <button
+          className="primary-button"
           onClick={handleSubmit}
         >
           Continuer

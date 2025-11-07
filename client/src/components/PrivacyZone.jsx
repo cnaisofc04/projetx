@@ -35,7 +35,7 @@ export default function PrivacyZone({ user, onNext }) {
       <div className="form-content">
         <Logo size={60} />
         <h2>Zone d'ombre</h2>
-        <p className="step-indicator">Étape {user?.gender === 'woman' ? '7/9' : '6/9'}</p>
+        <p className="step-indicator">Étape {user?.gender === 'woman' ? '9/11' : '8/11'}</p>
         <p className="subtitle">
           Définissez une zone où vous ne souhaitez pas être visible
         </p>

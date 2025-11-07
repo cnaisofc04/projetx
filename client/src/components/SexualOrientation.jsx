@@ -33,7 +33,7 @@ export default function SexualOrientation({ user, onNext }) {
       <div className="form-content wide">
         <Logo size={60} />
         <h2>Vos préférences d'orientation</h2>
-        <p className="step-indicator">Étape 4/9</p>
+        <p className="step-indicator">Étape 4/11</p>
         <p className="subtitle">Indiquez votre ouverture pour chaque orientation (50% = neutre)</p>
 
         <div className="preferences-container">

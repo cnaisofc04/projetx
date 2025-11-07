@@ -14,7 +14,7 @@ export default function BeardPreference({ user, onNext }) {
       <div className="form-content">
         <Logo size={60} />
         <h2>Préférence de barbe</h2>
-        <p className="step-indicator">Étape 6/9</p>
+        <p className="step-indicator">Étape 8/11 (Femmes uniquement)</p>
         <p className="subtitle">
           Indiquez votre préférence pour les hommes barbus (50% = aucune préférence)
         </p>

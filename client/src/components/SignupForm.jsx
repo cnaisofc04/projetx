@@ -91,7 +91,7 @@ export default function SignupForm({ onNext }) {
       <div className="form-content">
         <Logo size={60} />
         <h2>Créer votre compte</h2>
-        <p className="step-indicator">Étape 1/7</p>
+        <p className="step-indicator">Étape 1/11</p>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
