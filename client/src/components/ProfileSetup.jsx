@@ -77,33 +77,30 @@ export default function ProfileSetup({ user, onComplete }) {
 
   const handleSubmit = async () => {
     if (photos.length > 0 && professions.length > 0 && professionalStatus.length > 0) {
+      const completeProfile = {
+        photos,
+        professions,
+        professionalStatus,
+        interests,
+        favoriteBooks,
+        favoriteMovies,
+        favoriteMusic
+      };
+
       try {
-        // Import du service Supabase
         const { saveProfile } = await import('../services/supabaseClient');
+        
+        const result = await saveProfile(user.id || user.email, completeProfile);
 
-        // Sauvegarder dans Supabase au lieu de localStorage
-        await saveProfile(user.id || user.email, {
-          photos,
-          professions,
-          professionalStatus,
-          interests,
-          favoriteBooks,
-          favoriteMovies,
-          favoriteMusic
-        });
+        if (result.error) {
+          throw result.error;
+        }
 
-        onComplete({
-          photos,
-          professions,
-          professionalStatus,
-          interests,
-          favoriteBooks,
-          favoriteMovies,
-          favoriteMusic
-        });
+        console.log('✅ Profil sauvegardé avec succès');
+        onComplete(completeProfile);
       } catch (error) {
-        console.error('Erreur sauvegarde Supabase:', error);
-        alert('⚠️ Erreur lors de la sauvegarde. Veuillez réessayer.');
+        console.error('❌ Erreur sauvegarde:', error);
+        alert(`Erreur lors de la sauvegarde: ${error.message || 'Erreur inconnue'}`);
       }
     }
   };
