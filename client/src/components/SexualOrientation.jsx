@@ -2,7 +2,12 @@ import { useState } from 'react';
 import Logo from './Logo';
 
 export default function SexualOrientation({ user, onNext }) {
-  const [selected, setSelected] = useState(null);
+  const [preferences, setPreferences] = useState({
+    hetero: 50,
+    homo: 50,
+    bi: 50,
+    trans: 50
+  });
 
   const orientations = [
     { id: 'hetero', label: 'Hétérosexuel(le)', icon: '👫' },
@@ -11,37 +16,58 @@ export default function SexualOrientation({ user, onNext }) {
     { id: 'trans', label: 'Transgenre', icon: '🏳️‍⚧️' }
   ];
 
+  const getPreferenceLabel = (value) => {
+    if (value < 25) return 'Pas ouvert(e)';
+    if (value < 45) return 'Peu ouvert(e)';
+    if (value >= 45 && value <= 55) return 'Neutre';
+    if (value > 75) return 'Très ouvert(e)';
+    return 'Ouvert(e)';
+  };
+
   const handleSubmit = () => {
-    if (selected) {
-      onNext({ sexualOrientation: selected });
-    }
+    onNext({ sexualOrientationPreferences: preferences });
   };
 
   return (
     <div className="sexual-orientation">
-      <div className="form-content">
+      <div className="form-content wide">
         <Logo size={60} />
-        <h2>Votre orientation sexuelle</h2>
-        <p className="step-indicator">Étape 4/7</p>
+        <h2>Vos préférences d'orientation</h2>
+        <p className="step-indicator">Étape 4/9</p>
+        <p className="subtitle">Indiquez votre ouverture pour chaque orientation (50% = neutre)</p>
 
-        <div className="orientation-grid">
+        <div className="preferences-container">
           {orientations.map(orientation => (
-            <button
-              key={orientation.id}
-              className={selected === orientation.id ? 'orientation-card active' : 'orientation-card'}
-              onClick={() => setSelected(orientation.id)}
-            >
-              <span className="orientation-icon">{orientation.icon}</span>
-              <span className="orientation-label">{orientation.label}</span>
-            </button>
+            <div key={orientation.id} className="preference-item">
+              <div className="preference-header">
+                <label>
+                  <span className="type-icon-small">{orientation.icon}</span> {orientation.label}
+                </label>
+                <span className="preference-value">{preferences[orientation.id]}%</span>
+              </div>
+              
+              <div className="slider-labels">
+                <span>Pas ouvert</span>
+                <span>Très ouvert</span>
+              </div>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={preferences[orientation.id]}
+                onChange={(e) => setPreferences({...preferences, [orientation.id]: parseInt(e.target.value)})}
+                className="preference-slider"
+              />
+
+              <div className="preference-description">
+                {getPreferenceLabel(preferences[orientation.id])}
+              </div>
+            </div>
           ))}
         </div>
 
-        <button 
-          className="primary-button" 
-          onClick={handleSubmit}
-          disabled={!selected}
-        >
+        <button className="primary-button" onClick={handleSubmit}>
           Continuer
         </button>
       </div>

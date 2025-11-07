@@ -2,7 +2,13 @@ import { useState } from 'react';
 import Logo from './Logo';
 
 export default function RelationshipType({ user, onNext }) {
-  const [selected, setSelected] = useState(null);
+  const [preferences, setPreferences] = useState({
+    serious: 50,
+    casual: 50,
+    marriage: 50,
+    nothing_serious: 50,
+    fun: 50
+  });
 
   const relationshipTypes = [
     { id: 'serious', label: 'Relation sérieuse', icon: '💕' },
@@ -12,37 +18,58 @@ export default function RelationshipType({ user, onNext }) {
     { id: 'fun', label: 'Me divertir', icon: '🎉' }
   ];
 
+  const getPreferenceLabel = (value) => {
+    if (value < 25) return 'Pas intéressé(e)';
+    if (value < 45) return 'Peu intéressé(e)';
+    if (value >= 45 && value <= 55) return 'Neutre';
+    if (value > 75) return 'Très intéressé(e)';
+    return 'Intéressé(e)';
+  };
+
   const handleSubmit = () => {
-    if (selected) {
-      onNext({ relationshipType: selected });
-    }
+    onNext({ relationshipPreferences: preferences });
   };
 
   return (
     <div className="relationship-type">
-      <div className="form-content">
+      <div className="form-content wide">
         <Logo size={60} />
         <h2>Que recherchez-vous ?</h2>
-        <p className="step-indicator">Étape 3/7</p>
+        <p className="step-indicator">Étape 3/9</p>
+        <p className="subtitle">Ajustez votre intérêt pour chaque type de relation (50% = neutre)</p>
 
-        <div className="type-grid">
+        <div className="preferences-container">
           {relationshipTypes.map(type => (
-            <button
-              key={type.id}
-              className={selected === type.id ? 'type-card active' : 'type-card'}
-              onClick={() => setSelected(type.id)}
-            >
-              <span className="type-icon">{type.icon}</span>
-              <span className="type-label">{type.label}</span>
-            </button>
+            <div key={type.id} className="preference-item">
+              <div className="preference-header">
+                <label>
+                  <span className="type-icon-small">{type.icon}</span> {type.label}
+                </label>
+                <span className="preference-value">{preferences[type.id]}%</span>
+              </div>
+              
+              <div className="slider-labels">
+                <span>Pas intéressé</span>
+                <span>Très intéressé</span>
+              </div>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={preferences[type.id]}
+                onChange={(e) => setPreferences({...preferences, [type.id]: parseInt(e.target.value)})}
+                className="preference-slider"
+              />
+
+              <div className="preference-description">
+                {getPreferenceLabel(preferences[type.id])}
+              </div>
+            </div>
           ))}
         </div>
 
-        <button 
-          className="primary-button" 
-          onClick={handleSubmit}
-          disabled={!selected}
-        >
+        <button className="primary-button" onClick={handleSubmit}>
           Continuer
         </button>
       </div>

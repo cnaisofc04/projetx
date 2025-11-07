@@ -8,6 +8,8 @@ import PsychologyQuestions from './components/PsychologyQuestions';
 import RelationshipType from './components/RelationshipType';
 import SexualOrientation from './components/SexualOrientation';
 import DetailedPreferences from './components/DetailedPreferences';
+import BeardPreference from './components/BeardPreference';
+import PrivacyZone from './components/PrivacyZone';
 import ProfileSetup from './components/ProfileSetup';
 import MainApp from './components/MainApp';
 
@@ -74,6 +76,26 @@ function App() {
         />;
       case 'detailed-preferences':
         return <DetailedPreferences 
+          user={user}
+          onNext={(data) => {
+            setUser({...user, ...data});
+            if (user?.gender === 'woman') {
+              setCurrentScreen('beard-preference');
+            } else {
+              setCurrentScreen('privacy-zone');
+            }
+          }} 
+        />;
+      case 'beard-preference':
+        return <BeardPreference 
+          user={user}
+          onNext={(data) => {
+            setUser({...user, ...data});
+            setCurrentScreen('privacy-zone');
+          }} 
+        />;
+      case 'privacy-zone':
+        return <PrivacyZone 
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});

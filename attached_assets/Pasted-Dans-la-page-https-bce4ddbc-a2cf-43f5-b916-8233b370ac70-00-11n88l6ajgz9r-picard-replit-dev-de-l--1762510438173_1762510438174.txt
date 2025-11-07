@@ -1,0 +1,11 @@
+Dans la page https://bce4ddbc-a2cf-43f5-b916-8233b370ac70-00-11n88l6ajgz9r.picard.replit.dev/ de l’étape 2. je veux que cela soit des slider et pas de bouton. 
+
+Dans la page de l’étape 3 https://bce4ddbc-a2cf-43f5-b916-8233b370ac70-00-11n88l6ajgz9r.picard.replit.dev/ . je veux que cela soit des slider et pas de bouton. 
+Dans la page de l’étape 4  https://bce4ddbc-a2cf-43f5-b916-8233b370ac70-00-11n88l6ajgz9r.picard.replit.dev/ je veux que cela soit des slider et pas de bouton. 
+Dans la page de l’étape 5 https://bce4ddbc-a2cf-43f5-b916-8233b370ac70-00-11n88l6ajgz9r.picard.replit.dev/  je veux que tu sépares les slider des cheveux. Je veux un slider pour les 3 type de cheveux et pas un seul pour les 3. 
+Dans la page étape 6 https://bce4ddbc-a2cf-43f5-b916-8233b370ac70-00-11n88l6ajgz9r.picard.replit.dev/ 
+  Je ne veux pas de bio.  Et quand je clic sur ajouter une photo. Je ne vois rien pour permettre de chercher la photo réellement sur min téléphone ou min ordinateur  pouur charger réellement les photos! Je ne vois pas aussi de boutons ajouter une profession alors quil y a un bouton ajouter ajouter un centre d’intérêt ( tu inclura directement les bouton de pré selection pour cela.  Je veux aussi dans cette parti un catégorique avec bouton ( étudiant, travail, chômage, retraite, sans emploi avec bouton oui ou nom) Revois tout les couches et les etape et les basse de données pour etre sur que tu a bien tout suprimer et integrer les choses correctement dans lordres et dans tout les platforme et interconnexion avec lés chemin exact des tables quel sont bien créer 
+Ou autre parti comme pour le Centres d'intérêt  ou il peuvent mètre le nom des livres qu’il aime . 
+Pareil pour filme. (Filme quil aime) 
+Pareil pour  musique ( chanteur quil aime)
+Inclure aussi une étape pour garder la zone d’ombre, ou les gens peuvent mètre leur adresse exacte et ou dans cette zone ou au tour les gens ne soit pas notifier de leur présence  pour que si il ne veulent pas voir ou etre vue des gens d’où ils habite ou proches .  Pour les femme une étape ou elle peut choisir si elle elle les homme barbus ou sans barbes. Revoie tout cela pour avoir des étapes pour chaque chose de manière logique pour avoir le moins de fonction par page possible. Et présente moi ton nouveau plan complet apres audit complet avant que je valider pour que tu puise procéder ! 
