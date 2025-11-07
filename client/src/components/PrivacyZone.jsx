@@ -4,9 +4,27 @@ import Logo from './Logo';
 export default function PrivacyZone({ user, onNext }) {
   const [privacyData, setPrivacyData] = useState({
     enablePrivacyZone: false,
-    address: '',
+    addresses: [],
     radius: 5
   });
+  const [currentAddress, setCurrentAddress] = useState('');
+
+  const addAddress = () => {
+    if (currentAddress.trim() && privacyData.addresses.length < 5) {
+      setPrivacyData({
+        ...privacyData,
+        addresses: [...privacyData.addresses, currentAddress.trim()]
+      });
+      setCurrentAddress('');
+    }
+  };
+
+  const removeAddress = (index) => {
+    setPrivacyData({
+      ...privacyData,
+      addresses: privacyData.addresses.filter((_, i) => i !== index)
+    });
+  };
 
   const handleSubmit = () => {
     onNext({ privacyShadowZone: privacyData });
@@ -40,14 +58,32 @@ export default function PrivacyZone({ user, onNext }) {
           {privacyData.enablePrivacyZone && (
             <>
               <div className="form-group">
-                <label>Adresse ou lieu *</label>
-                <input
-                  type="text"
-                  value={privacyData.address}
-                  onChange={(e) => setPrivacyData({...privacyData, address: e.target.value})}
-                  placeholder="Ex: 123 rue de la Paix, Paris"
-                />
-                <p className="helper-text">Votre adresse ne sera jamais partagée</p>
+                <label>Adresse(s) ou lieu(x) *</label>
+                <div className="tags-list">
+                  {privacyData.addresses.map((addr, index) => (
+                    <span key={index} className="tag">
+                      📍 {addr}
+                      <button type="button" onClick={() => removeAddress(index)}>×</button>
+                    </span>
+                  ))}
+                </div>
+                <div className="custom-input-section">
+                  <input
+                    type="text"
+                    value={currentAddress}
+                    onChange={(e) => setCurrentAddress(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addAddress())}
+                    placeholder="Ex: 123 rue de la Paix, Paris"
+                  />
+                  <button
+                    type="button"
+                    onClick={addAddress}
+                    disabled={privacyData.addresses.length >= 5 || !currentAddress.trim()}
+                  >
+                    Ajouter
+                  </button>
+                </div>
+                <p className="helper-text">Vos adresses ne seront jamais partagées (max 5)</p>
               </div>
 
               <div className="form-group">
@@ -72,7 +108,7 @@ export default function PrivacyZone({ user, onNext }) {
         <button 
           className="primary-button" 
           onClick={handleSubmit}
-          disabled={privacyData.enablePrivacyZone && !privacyData.address}
+          disabled={privacyData.enablePrivacyZone && privacyData.addresses.length === 0}
         >
           Continuer
         </button>

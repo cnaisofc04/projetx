@@ -72,17 +72,17 @@ export default function MainApp({ user, onLogout }) {
             </div>
 
             <div className="detail-section">
-              <h3>Bio</h3>
-              <p>{currentProfile.bio}</p>
-            </div>
-
-            <div className="detail-section">
               <h3>Centres d'intérêt</h3>
               <div className="interests-tags">
                 {currentProfile.interests.map((interest, i) => (
                   <span key={i} className="interest-tag">{interest}</span>
                 ))}
               </div>
+            </div>
+            
+            <div className="detail-section">
+              <h3>Recherche</h3>
+              <p>Relation sérieuse</p>
             </div>
           </div>
 
@@ -146,12 +146,48 @@ export default function MainApp({ user, onLogout }) {
         <h3>{user.firstName} {user.lastName}, {user.birthDate ? new Date().getFullYear() - new Date(user.birthDate).getFullYear() : '?'} ans</h3>
         <p>{user.city}</p>
         {user.profession && <p className="profession">{user.profession}</p>}
-        {user.bio && (
-          <div className="bio-section">
-            <h4>Bio</h4>
-            <p>{user.bio}</p>
-          </div>
-        )}
+        
+        <div className="bio-section">
+          {user.relationshipPreferences && (
+            <div className="preference-detail">
+              <h4>Type de relation recherchée</h4>
+              <p>{Array.isArray(user.relationshipPreferences) ? user.relationshipPreferences.join(', ') : user.relationshipPreferences}</p>
+            </div>
+          )}
+          
+          {user.religion && (
+            <div className="preference-detail">
+              <h4>Religion</h4>
+              <p>{user.religion}</p>
+            </div>
+          )}
+          
+          {user.eyeColor && (
+            <div className="preference-detail">
+              <h4>Couleur des yeux</h4>
+              <p>{user.eyeColor}</p>
+            </div>
+          )}
+
+          {user.sexualOrientationPreferences && (
+            <div className="preference-detail">
+              <h4>Orientation</h4>
+              <p>Profil ouvert et respectueux</p>
+            </div>
+          )}
+
+          {user.interests && user.interests.length > 0 && (
+            <div className="preference-detail">
+              <h4>Centres d'intérêt</h4>
+              <div className="interests-tags">
+                {user.interests.slice(0, 5).map((interest, i) => (
+                  <span key={i} className="interest-tag">{interest.label}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
         <button className="logout-btn" onClick={onLogout}>
           Déconnexion
         </button>

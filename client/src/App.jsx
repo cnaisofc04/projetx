@@ -7,6 +7,8 @@ import LoginForm from './components/LoginForm';
 import PsychologyQuestions from './components/PsychologyQuestions';
 import RelationshipType from './components/RelationshipType';
 import SexualOrientation from './components/SexualOrientation';
+import Religion from './components/Religion';
+import EyeColor from './components/EyeColor';
 import DetailedPreferences from './components/DetailedPreferences';
 import BeardPreference from './components/BeardPreference';
 import PrivacyZone from './components/PrivacyZone';
@@ -65,6 +67,22 @@ function App() {
         />;
       case 'sexual-orientation':
         return <SexualOrientation
+          user={user}
+          onNext={(data) => {
+            setUser({...user, ...data});
+            setCurrentScreen('religion');
+          }}
+        />;
+      case 'religion':
+        return <Religion
+          user={user}
+          onNext={(data) => {
+            setUser({...user, ...data});
+            setCurrentScreen('eye-color');
+          }}
+        />;
+      case 'eye-color':
+        return <EyeColor
           user={user}
           onNext={(data) => {
             setUser({...user, ...data});

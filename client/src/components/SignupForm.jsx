@@ -10,7 +10,8 @@ export default function SignupForm({ onNext }) {
     password: '',
     confirmPassword: '',
     birthDate: '',
-    city: ''
+    city: '',
+    country: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -66,6 +67,12 @@ export default function SignupForm({ onNext }) {
       newErrors.city = 'Ville requise';
     } else if (!alphabeticRegex.test(formData.city)) {
       newErrors.city = 'Seuls les lettres, espaces et tirets sont autorisés';
+    }
+
+    if (!formData.country) {
+      newErrors.country = 'Pays requis';
+    } else if (!alphabeticRegex.test(formData.country)) {
+      newErrors.country = 'Seuls les lettres, espaces et tirets sont autorisés';
     }
 
     setErrors(newErrors);
@@ -186,6 +193,17 @@ export default function SignupForm({ onNext }) {
               />
               {errors.city && <span className="error">{errors.city}</span>}
             </div>
+          </div>
+
+          <div className="form-group">
+            <label>Pays *</label>
+            <input
+              type="text"
+              value={formData.country}
+              onChange={(e) => setFormData({...formData, country: e.target.value})}
+              placeholder="France, Canada..."
+            />
+            {errors.country && <span className="error">{errors.country}</span>}
           </div>
 
           <button type="submit" className="primary-button">

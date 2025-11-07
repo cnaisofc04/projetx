@@ -757,6 +757,29 @@ h1, h2 {
   line-height: 1.6;
 }
 
+.preference-detail {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.preference-detail:last-child {
+  border-bottom: none;
+}
+
+.preference-detail h4 {
+  color: #FF1493;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preference-detail p {
+  color: #333;
+  font-weight: 500;
+}
+
 .logout-btn {
   margin-top: 20px;
   padding: 12px 30px;
