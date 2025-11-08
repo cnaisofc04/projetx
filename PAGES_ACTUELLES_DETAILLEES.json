@@ -1,0 +1,922 @@
+
+{
+  "pages_frontend_react": {
+    "description": "Application React OneTwo - Application de rencontre",
+    "route_principale": "/",
+    "pages": {
+      "welcome": {
+        "fichier": "client/src/components/WelcomeScreen.jsx",
+        "route": "/",
+        "description": "Page d'accueil de l'application",
+        "contenu": {
+          "elements": [
+            "Logo OneTwo",
+            "Titre de l'application",
+            "Tagline: 'L'application de rencontre nouvelle génération'",
+            "Section Features avec 3 caractéristiques",
+            "Bouton 'Commencer l'aventure'"
+          ],
+          "fonctionnalites": [
+            "Affichage du logo animé",
+            "Présentation des fonctionnalités: Connexions Authentiques, Préférences Détaillées, Interface Moderne",
+            "Navigation vers la page de choix d'authentification"
+          ],
+          "navigation": "onContinue() -> AuthChoice"
+        }
+      },
+      "auth_choice": {
+        "fichier": "client/src/components/AuthChoice.jsx",
+        "route": "/auth-choice",
+        "description": "Choix entre création de compte et connexion",
+        "contenu": {
+          "elements": [
+            "Logo",
+            "Titre 'OneTwo'",
+            "Sous-titre de bienvenue",
+            "Bouton 'Créer un compte'",
+            "Bouton 'J'ai déjà un compte'"
+          ],
+          "fonctionnalites": [
+            "Redirection vers la page d'inscription (onSignup)",
+            "Redirection vers la page de connexion (onLogin)"
+          ],
+          "navigation": {
+            "signup": "-> SignupForm",
+            "login": "-> LoginForm"
+          }
+        }
+      },
+      "signup": {
+        "fichier": "client/src/components/SignupForm.jsx",
+        "route": "/signup",
+        "description": "Formulaire d'inscription - Étape 1/11",
+        "contenu": {
+          "champs_formulaire": [
+            "Genre (Homme/Femme) - requis",
+            "Prénom - requis, alphabétique uniquement",
+            "Nom - requis, alphabétique uniquement",
+            "Email - requis, validation format email",
+            "Mot de passe - requis, min 8 caractères, majuscule + minuscule + chiffre",
+            "Confirmation mot de passe - requis, doit correspondre",
+            "Date de naissance - requis, minimum 18 ans",
+            "Ville - requis, alphabétique uniquement",
+            "Pays - requis, alphabétique uniquement"
+          ],
+          "validations": [
+            "Regex alphabétique pour nom, prénom, ville, pays",
+            "Validation email avec regex",
+            "Validation force du mot de passe",
+            "Vérification âge minimum 18 ans",
+            "Correspondance des mots de passe"
+          ],
+          "fonctionnalites": [
+            "Validation en temps réel",
+            "Messages d'erreur détaillés",
+            "Stockage temporaire des données"
+          ],
+          "navigation": "onNext() -> PsychologyQuestions"
+        }
+      },
+      "login": {
+        "fichier": "client/src/components/LoginForm.jsx",
+        "route": "/login",
+        "description": "Formulaire de connexion",
+        "contenu": {
+          "champs_formulaire": [
+            "Email",
+            "Mot de passe"
+          ],
+          "fonctionnalites": [
+            "Vérification des credentials dans localStorage",
+            "Messages d'erreur si compte inexistant ou mauvais credentials",
+            "Bouton retour vers AuthChoice"
+          ],
+          "navigation": {
+            "success": "onLogin() -> MainApp",
+            "back": "onBack() -> AuthChoice"
+          }
+        }
+      },
+      "psychology_questions": {
+        "fichier": "client/src/components/PsychologyQuestions.jsx",
+        "route": "/psychology",
+        "description": "Questions psychologiques - Étape 2/11",
+        "contenu": {
+          "questions": [
+            {
+              "id": "shy",
+              "label": "Vous êtes timide ?",
+              "type": "slider",
+              "range": "0-100%",
+              "labels": ["Pas du tout", "Très timide"]
+            },
+            {
+              "id": "introverted",
+              "label": "Vous êtes introverti ?",
+              "type": "slider",
+              "range": "0-100%",
+              "labels": ["Pas du tout", "Très introverti"]
+            }
+          ],
+          "fonctionnalites": [
+            "Sliders avec valeurs 0-100",
+            "Affichage dynamique du niveau sélectionné",
+            "Sauvegarde des réponses"
+          ],
+          "navigation": "onNext() -> RelationshipType"
+        }
+      },
+      "relationship_type": {
+        "fichier": "client/src/components/RelationshipType.jsx",
+        "route": "/relationship-type",
+        "description": "Type de relation recherchée - Étape 3/11",
+        "contenu": {
+          "preferences": [
+            {"id": "serious", "label": "Relation sérieuse", "icon": "💕"},
+            {"id": "casual", "label": "Plan d'un soir", "icon": "🌙"},
+            {"id": "marriage", "label": "Je veux me marier", "icon": "💍"},
+            {"id": "nothing_serious", "label": "Rien de sérieux", "icon": "😊"},
+            {"id": "fun", "label": "Me divertir", "icon": "🎉"}
+          ],
+          "fonctionnalites": [
+            "Sliders pour chaque type de relation (0-100%)",
+            "50% = neutre",
+            "Labels dynamiques selon la valeur",
+            "Possibilité de sélectionner plusieurs préférences"
+          ],
+          "navigation": "onNext() -> SexualOrientation"
+        }
+      },
+      "sexual_orientation": {
+        "fichier": "client/src/components/SexualOrientation.jsx",
+        "route": "/sexual-orientation",
+        "description": "Préférences d'orientation sexuelle - Étape 4/11",
+        "contenu": {
+          "orientations": [
+            {"id": "hetero", "label": "Hétérosexuel(le)", "icon": "👫"},
+            {"id": "homo", "label": "Homosexuel(le)", "icon": "👭"},
+            {"id": "bi", "label": "Bisexuel(le)", "icon": "💗"},
+            {"id": "trans", "label": "Transgenre", "icon": "🏳️‍⚧️"}
+          ],
+          "fonctionnalites": [
+            "Sliders d'ouverture pour chaque orientation",
+            "Valeurs 0-100%, 50% = neutre",
+            "Approche respectueuse et inclusive"
+          ],
+          "navigation": "onNext() -> Religion"
+        }
+      },
+      "religion": {
+        "fichier": "client/src/components/Religion.jsx",
+        "route": "/religion",
+        "description": "Religion ou conviction - Étape 5/11",
+        "contenu": {
+          "options": [
+            {"id": "christianisme", "label": "Christianisme", "icon": "✝️"},
+            {"id": "islam", "label": "Islam", "icon": "☪️"},
+            {"id": "judaisme", "label": "Judaïsme", "icon": "✡️"},
+            {"id": "bouddhisme", "label": "Bouddhisme", "icon": "☸️"},
+            {"id": "hindouisme", "label": "Hindouisme", "icon": "🕉️"},
+            {"id": "athee", "label": "Athée", "icon": "🔬"},
+            {"id": "agnostique", "label": "Agnostique", "icon": "❓"},
+            {"id": "autre", "label": "Autre", "icon": "🌟"}
+          ],
+          "fonctionnalites": [
+            "Grille de cartes cliquables",
+            "Sélection unique",
+            "Mise en surbrillance de la sélection"
+          ],
+          "navigation": "onNext() -> EyeColor"
+        }
+      },
+      "eye_color": {
+        "fichier": "client/src/components/EyeColor.jsx",
+        "route": "/eye-color",
+        "description": "Couleur des yeux - Étape 6/11",
+        "contenu": {
+          "couleurs": [
+            {"id": "marron", "label": "Marron", "icon": "🟤"},
+            {"id": "bleu", "label": "Bleu", "icon": "🔵"},
+            {"id": "vert", "label": "Vert", "icon": "🟢"},
+            {"id": "noisette", "label": "Noisette", "icon": "🟡"},
+            {"id": "gris", "label": "Gris", "icon": "⚪"},
+            {"id": "noir", "label": "Noir", "icon": "⚫"},
+            {"id": "autre", "label": "Autre", "icon": "🌈"}
+          ],
+          "fonctionnalites": [
+            "Grille de sélection avec icônes",
+            "Sélection unique",
+            "Validation requise"
+          ],
+          "navigation": "onNext() -> HairColor"
+        }
+      },
+      "hair_color": {
+        "fichier": "client/src/components/HairColor.jsx",
+        "route": "/hair-color",
+        "description": "Couleur des cheveux - Étape 7/12",
+        "contenu": {
+          "systeme": "Slider avec gradient de couleur",
+          "couleurs_presets": [
+            {"value": 0, "color": "#000000", "label": "Noir"},
+            {"value": 16, "color": "#2C1810", "label": "Brun foncé"},
+            {"value": 33, "color": "#5C3A21", "label": "Châtain"},
+            {"value": 50, "color": "#8B6F47", "label": "Châtain clair"},
+            {"value": 66, "color": "#C4A574", "label": "Blond foncé"},
+            {"value": 83, "color": "#E5D3B3", "label": "Blond"},
+            {"value": 100, "color": "#F5E6D3", "label": "Blond platine"}
+          ],
+          "fonctionnalites": [
+            "Slider avec gradient visuel",
+            "Aperçu en temps réel de la couleur",
+            "Interpolation entre couleurs",
+            "Affichage du nom de la couleur"
+          ],
+          "navigation": "onNext() -> DetailedPreferences"
+        }
+      },
+      "detailed_preferences": {
+        "fichier": "client/src/components/DetailedPreferences.jsx",
+        "route": "/detailed-preferences",
+        "description": "Préférences détaillées - Étape 8/12",
+        "contenu": {
+          "preferences": [
+            {"id": "tattoos", "label": "Tatouages", "range": "Sans tatouage - Avec tatouages"},
+            {"id": "smoking", "label": "Tabac", "range": "Non-fumeur - Fumeur"},
+            {"id": "diet", "label": "Régime alimentaire", "range": "Végétarien - Omnivore"},
+            {"id": "hairBlonde", "label": "Cheveux blonds", "range": "Pas intéressé - Très intéressé"},
+            {"id": "hairBrunette", "label": "Cheveux bruns", "range": "Pas intéressé - Très intéressé"},
+            {"id": "hairRedhead", "label": "Cheveux roux", "range": "Pas intéressé - Très intéressé"},
+            {"id": "height", "label": "Taille", "range": "Petite - Grande"},
+            {"id": "bodyHair", "label": "Pilosité corporelle", "range": "Rasé(e) - Poilu(e)"},
+            {"id": "bodyType", "label": "Morphologie", "range": "Mince - Athlétique/Robuste"},
+            {"id": "style", "label": "Style vestimentaire", "range": "Casual - Élégant"}
+          ],
+          "fonctionnalites": [
+            "10 sliders de préférences",
+            "Valeur par défaut 50% (neutre)",
+            "Composant réutilisable SliderPreference",
+            "Navigation conditionnelle selon le genre"
+          ],
+          "navigation": {
+            "if_woman": "onNext() -> BeardPreference",
+            "if_man": "onNext() -> PrivacyZone"
+          }
+        }
+      },
+      "beard_preference": {
+        "fichier": "client/src/components/BeardPreference.jsx",
+        "route": "/beard-preference",
+        "description": "Préférence de barbe (Femmes uniquement) - Étape 9/12",
+        "contenu": {
+          "preference": {
+            "id": "beardPreference",
+            "label": "Hommes avec barbe",
+            "range": "Sans barbe - Avec barbe",
+            "default": 50
+          },
+          "fonctionnalites": [
+            "Slider unique",
+            "50% = aucune préférence",
+            "Uniquement affiché aux femmes"
+          ],
+          "navigation": "onNext() -> PrivacyZone"
+        }
+      },
+      "privacy_zone": {
+        "fichier": "client/src/components/PrivacyZone.jsx",
+        "route": "/privacy-zone",
+        "description": "Zone d'ombre (privacy) - Étape 9-10/11",
+        "contenu": {
+          "options": {
+            "enablePrivacyZone": "Activer/Désactiver",
+            "addresses": "Liste d'adresses (max 5)",
+            "radius": "Rayon en km (1-50)"
+          },
+          "fonctionnalites": [
+            "Toggle pour activer la zone d'ombre",
+            "Ajout d'adresses multiples",
+            "Slider pour définir le rayon",
+            "Validation: au moins 1 adresse si activé",
+            "Garantie de confidentialité des adresses"
+          ],
+          "explication": "Permet de définir une zone géographique où l'utilisateur ne souhaite pas être visible ni voir d'autres profils (ex: quartier de travail)",
+          "navigation": "onNext() -> ProfileSetup"
+        }
+      },
+      "profile_setup": {
+        "fichier": "client/src/components/ProfileSetup.jsx",
+        "route": "/profile-setup",
+        "description": "Finalisation du profil - Étapes 10-11/11",
+        "contenu": {
+          "sections": {
+            "photos": {
+              "label": "Photos de profil",
+              "max": 6,
+              "requis": true,
+              "composant": "PhotoUploader"
+            },
+            "professions": {
+              "label": "Profession(s)",
+              "max": 5,
+              "requis": true,
+              "type": "custom_input",
+              "validation": "alphabétique uniquement"
+            },
+            "professionalStatus": {
+              "label": "Situation professionnelle",
+              "max": 2,
+              "requis": true,
+              "options": [
+                {"id": "student", "label": "Étudiant(e)", "icon": "🎓"},
+                {"id": "employed", "label": "En activité", "icon": "💼"},
+                {"id": "unemployed", "label": "En recherche", "icon": "🔍"},
+                {"id": "retired", "label": "Retraité(e)", "icon": "🏖️"},
+                {"id": "entrepreneur", "label": "Entrepreneur", "icon": "🚀"},
+                {"id": "freelance", "label": "Freelance", "icon": "💻"}
+              ]
+            },
+            "interests": {
+              "label": "Centres d'intérêt",
+              "max": 10,
+              "requis": false,
+              "presets": [
+                {"id": "sport", "label": "Sport", "icon": "⚽"},
+                {"id": "travel", "label": "Voyages", "icon": "✈️"},
+                {"id": "music", "label": "Musique", "icon": "🎵"},
+                {"id": "cinema", "label": "Cinéma", "icon": "🎬"},
+                {"id": "reading", "label": "Lecture", "icon": "📚"},
+                {"id": "cooking", "label": "Cuisine", "icon": "👨‍🍳"},
+                {"id": "art", "label": "Art", "icon": "🎨"},
+                {"id": "nature", "label": "Nature", "icon": "🌳"},
+                {"id": "gaming", "label": "Jeux vidéo", "icon": "🎮"},
+                {"id": "photography", "label": "Photo", "icon": "📸"}
+              ],
+              "custom": true
+            },
+            "favoriteBooks": {
+              "label": "Livres préférés",
+              "max": 10,
+              "requis": false,
+              "type": "custom_input",
+              "validation": "alphabétique"
+            },
+            "favoriteMovies": {
+              "label": "Films préférés",
+              "max": 10,
+              "requis": false,
+              "type": "custom_input",
+              "validation": "alphabétique"
+            },
+            "favoriteMusic": {
+              "label": "Musique/Artistes préférés",
+              "max": 10,
+              "requis": false,
+              "type": "custom_input",
+              "validation": "alphabétique"
+            }
+          },
+          "fonctionnalites": [
+            "Upload de photos (max 6)",
+            "Sélection de chips pour situations professionnelles",
+            "Inputs personnalisés avec validation alphabétique stricte",
+            "Système de tags pour chaque catégorie",
+            "Sauvegarde dans Supabase à la validation",
+            "Gestion d'erreurs de sauvegarde"
+          ],
+          "navigation": "onComplete() -> MainApp"
+        }
+      },
+      "main_app": {
+        "fichier": "client/src/components/MainApp.jsx",
+        "route": "/main",
+        "description": "Application principale après connexion",
+        "contenu": {
+          "tabs": {
+            "discover": {
+              "label": "Découvrir",
+              "icon": "🔥",
+              "description": "Cartes de profils à swiper",
+              "fonctionnalites": [
+                "Affichage de profils mock",
+                "Système de swipe (gauche/droite/haut)",
+                "Détails du profil (photo, nom, âge, ville, profession, bio, intérêts)",
+                "Boutons d'action: Dislike (✕), Super Like (★), Like (♥)",
+                "Notifications de match"
+              ]
+            },
+            "matches": {
+              "label": "Matchs",
+              "icon": "💕",
+              "description": "Liste des matchs",
+              "fonctionnalites": [
+                "Grille de matchs avec photos",
+                "Indication du temps depuis le match",
+                "Message pour accès Premium au chat",
+                "Bouton vers Premium"
+              ]
+            },
+            "profile": {
+              "label": "Profil",
+              "icon": "👤",
+              "description": "Profil de l'utilisateur connecté",
+              "fonctionnalites": [
+                "Affichage photo de profil ou initiales",
+                "Nom, âge, ville",
+                "Profession",
+                "Type de relation recherchée",
+                "Religion",
+                "Couleur des yeux",
+                "Orientation",
+                "Centres d'intérêt (5 premiers)",
+                "Bouton de déconnexion"
+              ]
+            }
+          },
+          "modal_premium": {
+            "description": "Modal Premium",
+            "options": [
+              {
+                "nom": "Premium 24h",
+                "prix": "1,99€",
+                "avantages": [
+                  "Chat illimité pendant 24h",
+                  "Voir qui vous a liké",
+                  "Super likes illimités",
+                  "Rewind illimité"
+                ]
+              },
+              {
+                "nom": "Mise en avant",
+                "prix": "99€",
+                "badge": "POPULAIRE",
+                "avantages": [
+                  "Profil en première position",
+                  "Visibilité maximale pendant 30 jours",
+                  "10x plus de vues",
+                  "Badge 'Profil vedette'"
+                ]
+              }
+            ]
+          },
+          "navigation_bottom": {
+            "buttons": ["Découvrir", "Matchs", "Profil"]
+          }
+        }
+      }
+    }
+  },
+  "pages_backend_flask": {
+    "description": "Backend Flask - API et dashboards administratifs",
+    "route_principale": "http://0.0.0.0:5000",
+    "pages": {
+      "dashboard_principal": {
+        "fichier": "templates/dashboard.html",
+        "route": "/",
+        "description": "Dashboard centralisé de tous les modules",
+        "contenu": {
+          "sections": [
+            "Header avec titre et bouton de rafraîchissement",
+            "Grille de cartes pour chaque module",
+            "Affichage du statut (Activé/Désactivé/Partiel)",
+            "Détails de configuration pour chaque module"
+          ],
+          "modules_affiches": [
+            "Authentification (Supabase/Appwrite)",
+            "Paiements (Stripe)",
+            "Cache (Redis)",
+            "Intelligence Artificielle (OpenAI)",
+            "Analytics (Amplitude, LogRocket, PostHog)",
+            "Communication (Resend, Agora)",
+            "Collaboration (GitHub, GitLab, Trello)",
+            "Géolocalisation (Mapbox)",
+            "Services Additionnels"
+          ],
+          "api_endpoint": "/api/status",
+          "fonctionnalites": [
+            "Rafraîchissement en temps réel",
+            "Badges de statut colorés",
+            "Affichage de l'heure de dernière mise à jour",
+            "Animation de hover sur les cartes"
+          ]
+        }
+      },
+      "testing_dashboard": {
+        "fichier": "templates/testing_dashboard.html",
+        "route": "/testing",
+        "description": "Dashboard de tests ultra-complet - 24 plateformes",
+        "contenu": {
+          "statistiques_globales": {
+            "total_platforms": 24,
+            "total_functions": "Variable selon plateformes",
+            "configured_platforms": "Dynamique",
+            "success_tests": "Compteur en temps réel",
+            "failed_tests": "Compteur en temps réel"
+          },
+          "filtres_categories": [
+            "Toutes",
+            "Version Control",
+            "Backend",
+            "Payments",
+            "AI",
+            "Analytics",
+            "Communication",
+            "Collaboration",
+            "Cache",
+            "Database",
+            "Geolocation",
+            "Data",
+            "Automation",
+            "Mobile",
+            "Custom",
+            "Security",
+            "Testing",
+            "Integration"
+          ],
+          "plateformes_testees": {
+            "github": {
+              "nom": "GitHub",
+              "categorie": "Version Control",
+              "fonctions": 15,
+              "tests": [
+                "Authentification",
+                "Profil utilisateur",
+                "Liste des repositories",
+                "Détails repository",
+                "Issues",
+                "Pull Requests",
+                "Commits",
+                "Branches",
+                "Webhooks",
+                "Releases",
+                "Gists",
+                "Organizations",
+                "Repos étoilés",
+                "Followers",
+                "Rate Limit"
+              ]
+            },
+            "gitlab": {
+              "nom": "GitLab",
+              "categorie": "Version Control",
+              "fonctions": 15,
+              "tests": [
+                "Authentification",
+                "Profil utilisateur",
+                "Liste des projets",
+                "Détails projet",
+                "CI/CD Pipelines",
+                "CI/CD Jobs",
+                "Merge Requests",
+                "Issues",
+                "Commits",
+                "Branches",
+                "Webhooks",
+                "Variables CI/CD",
+                "Membres",
+                "Labels",
+                "Milestones"
+              ]
+            },
+            "stripe": {
+              "nom": "Stripe",
+              "categorie": "Payments",
+              "fonctions": 10,
+              "tests": [
+                "Authentification",
+                "Balance",
+                "Gérer les clients",
+                "Créer un paiement",
+                "Payment Intent",
+                "Créer un abonnement",
+                "Produits",
+                "Prix",
+                "Factures",
+                "Webhooks"
+              ]
+            },
+            "openai": {
+              "nom": "OpenAI",
+              "categorie": "AI",
+              "fonctions": 7,
+              "tests": [
+                "Authentification",
+                "Liste des modèles",
+                "Chat Completion",
+                "Completion",
+                "Embeddings",
+                "Génération d'images",
+                "Modération"
+              ]
+            },
+            "supabase": {
+              "nom": "Supabase",
+              "categorie": "Backend",
+              "fonctions": 9,
+              "tests": [
+                "Authentification",
+                "Créer utilisateur",
+                "Login",
+                "Lecture DB",
+                "Écriture DB",
+                "Update DB",
+                "Delete DB",
+                "Storage",
+                "Realtime"
+              ]
+            },
+            "autres_plateformes": "... (19 autres plateformes avec leurs fonctions respectives)"
+          },
+          "actions_globales": [
+            "Lancer TOUS les tests (toutes plateformes)",
+            "Tester uniquement les configurées",
+            "Filtrer par catégorie"
+          ],
+          "fonctionnalites": [
+            "Tests individuels par fonction",
+            "Tests par plateforme complète",
+            "Affichage des résultats en temps réel",
+            "Codes de couleur (succès/erreur/loading)",
+            "JSON détaillé des réponses",
+            "Barre de progression globale",
+            "Compteurs de tests réussis/échoués"
+          ]
+        }
+      },
+      "academy_home": {
+        "fichier": "templates/academy_home.html",
+        "route": "/academy",
+        "description": "Page d'accueil API Academy - Plateforme d'apprentissage",
+        "contenu": {
+          "hero": {
+            "titre": "API Academy",
+            "soustitre": "Maîtrisez 24+ plateformes professionnelles",
+            "tagline": "De zéro à expert en quelques heures"
+          },
+          "categories_api": {
+            "backend_auth": {
+              "titre": "Backend & Authentification",
+              "description": "Créez des applications complètes avec base de données, auth, et storage",
+              "plateformes": ["Supabase", "Appwrite", "PostgreSQL"]
+            },
+            "paiements": {
+              "titre": "Paiements",
+              "description": "Acceptez des paiements et gérez des abonnements",
+              "plateformes": ["Stripe"]
+            },
+            "ia": {
+              "titre": "Intelligence Artificielle",
+              "description": "Intégrez ChatGPT, génération d'images, et plus",
+              "plateformes": ["OpenAI", "Flowith"]
+            },
+            "devops": {
+              "titre": "Collaboration & DevOps",
+              "description": "Automatisez vos workflows, CI/CD, et gestion de projets",
+              "plateformes": ["GitHub", "GitLab", "Trello"]
+            },
+            "communication": {
+              "titre": "Communication",
+              "description": "Emails, vidéo, notifications en temps réel",
+              "plateformes": ["Resend", "Agora"]
+            },
+            "analytics": {
+              "titre": "Analytics",
+              "description": "Comprenez vos utilisateurs et optimisez votre produit",
+              "plateformes": ["Amplitude", "LogRocket", "PostHog"]
+            }
+          },
+          "actions": [
+            "Bouton vers Gestionnaire de Secrets",
+            "Bouton vers API Creator"
+          ]
+        }
+      },
+      "learn_platform": {
+        "fichier": "templates/learn_platform.html",
+        "route": "/learn/<platform_id>",
+        "description": "Page de tutoriel détaillé pour une plateforme",
+        "contenu": {
+          "sidebar": {
+            "navigation": "Liste des étapes du tutoriel",
+            "lien_retour": "Retour à l'accueil Academy"
+          },
+          "contenu_principal": {
+            "titre_plateforme": "Nom de la plateforme",
+            "description": "Description détaillée",
+            "etapes_tutoriel": {
+              "structure": [
+                {
+                  "titre": "Installation et Configuration",
+                  "description": "Instructions détaillées",
+                  "code": "Exemple de code avec coloration syntaxique",
+                  "try_it": "Bouton pour essayer le code"
+                }
+              ]
+            },
+            "configuration_api": {
+              "titre": "Configuration de votre clé API",
+              "etapes": "Liste numérotée pour obtenir la clé",
+              "lien_gestionnaire": "Lien vers le Gestionnaire de Secrets"
+            },
+            "test_direct": {
+              "input": "Champ pour entrer la clé API",
+              "bouton": "Tester la connexion",
+              "resultat": "Affichage du résultat du test"
+            }
+          },
+          "plateformes_disponibles": [
+            "Supabase",
+            "Stripe",
+            "OpenAI",
+            "GitHub",
+            "... (20 autres)"
+          ]
+        }
+      },
+      "secrets_manager": {
+        "fichier": "templates/secrets_manager.html",
+        "route": "/secrets-manager",
+        "description": "Gestionnaire de secrets/clés API",
+        "contenu": {
+          "sections": {
+            "liste_secrets": {
+              "description": "Affichage des secrets par plateforme",
+              "format": "Cartes avec nom de plateforme, nom du secret, valeur masquée",
+              "actions": [
+                "Copier le secret",
+                "Supprimer le secret"
+              ]
+            },
+            "ajout_secret": {
+              "champs": [
+                "Sélection de la plateforme",
+                "Nom du secret",
+                "Valeur du secret (masquée)"
+              ],
+              "bouton": "Ajouter"
+            },
+            "statistiques": {
+              "compteurs": [
+                "Secrets configurés",
+                "Plateformes actives"
+              ],
+              "info_securite": "Message sur le chiffrement AES-256"
+            },
+            "actions_rapides": [
+              "Exporter les secrets",
+              "Importer les secrets"
+            ]
+          },
+          "api_endpoint": "/api/secrets",
+          "securite": "Chiffrement AES-256, stockage sécurisé"
+        }
+      },
+      "api_creator": {
+        "fichier": "templates/api_creator.html",
+        "route": "/api-creator",
+        "description": "Interface de création d'API unifiée",
+        "contenu": {
+          "endpoints_existants": [
+            {"methode": "GET", "path": "/api/v1/platforms", "description": "Liste toutes les plateformes"},
+            {"methode": "GET", "path": "/api/v1/{platform}/status", "description": "Statut d'une plateforme"},
+            {"methode": "POST", "path": "/api/v1/stripe/payment", "description": "Crée un paiement Stripe"},
+            {"methode": "POST", "path": "/api/v1/openai/chat", "description": "Message à GPT-4"},
+            {"methode": "POST", "path": "/api/v1/resend/email", "description": "Envoie un email"}
+          ],
+          "creation_endpoint": {
+            "champs": [
+              "Méthode HTTP (GET/POST/PUT/DELETE)",
+              "Path de l'endpoint",
+              "Plateforme cible"
+            ],
+            "bouton": "Créer l'endpoint"
+          },
+          "sidebar": {
+            "cle_api": {
+              "affichage": "Clé masquée",
+              "actions": ["Copier", "Régénérer"]
+            },
+            "documentation": "Lien vers documentation auto-générée",
+            "playground": "Lien vers playground de test"
+          }
+        }
+      }
+    }
+  },
+  "composants_partages": {
+    "description": "Composants React réutilisables",
+    "composants": {
+      "Logo": {
+        "fichier": "client/src/components/Logo.jsx",
+        "description": "Logo SVG animé de OneTwo",
+        "props": ["size (default: 60)"],
+        "utilisation": "Affiché sur toutes les pages"
+      },
+      "SliderPreference": {
+        "fichier": "client/src/components/shared/SliderPreference.jsx",
+        "description": "Slider de préférence réutilisable",
+        "props": [
+          "label",
+          "value",
+          "onChange",
+          "leftLabel",
+          "rightLabel"
+        ],
+        "utilisation": "Utilisé dans DetailedPreferences, BeardPreference"
+      },
+      "ChipSelector": {
+        "fichier": "client/src/components/shared/ChipSelector.jsx",
+        "description": "Sélecteur de chips multiples",
+        "props": [
+          "options",
+          "selected",
+          "onToggle",
+          "maxSelection"
+        ],
+        "utilisation": "Utilisé dans ProfileSetup"
+      },
+      "PhotoUploader": {
+        "fichier": "client/src/components/shared/PhotoUploader.jsx",
+        "description": "Composant d'upload de photos",
+        "props": [
+          "photos",
+          "onPhotosChange",
+          "maxPhotos"
+        ],
+        "utilisation": "Utilisé dans ProfileSetup"
+      }
+    }
+  },
+  "services": {
+    "supabaseClient": {
+      "fichier": "client/src/services/supabaseClient.js",
+      "description": "Client Supabase pour l'authentification et la base de données",
+      "fonctions": [
+        "createClient() - Initialise le client Supabase",
+        "saveProfile() - Sauvegarde le profil utilisateur dans la DB"
+      ],
+      "configuration_requise": [
+        "VITE_SUPABASE_URL",
+        "VITE_SUPABASE_ANON_KEY"
+      ]
+    }
+  },
+  "flux_utilisateur": {
+    "description": "Parcours complet de l'utilisateur",
+    "etapes": [
+      "1. WelcomeScreen - Page d'accueil",
+      "2. AuthChoice - Choix signup/login",
+      "3a. SignupForm - Inscription (11 étapes totales)",
+      "3b. LoginForm - Connexion directe",
+      "4. PsychologyQuestions - Questions psychologiques",
+      "5. RelationshipType - Type de relation",
+      "6. SexualOrientation - Orientation sexuelle",
+      "7. Religion - Religion/conviction",
+      "8. EyeColor - Couleur des yeux",
+      "9. HairColor - Couleur des cheveux",
+      "10. DetailedPreferences - Préférences détaillées",
+      "11. BeardPreference - Préférence barbe (femmes uniquement)",
+      "12. PrivacyZone - Zone d'ombre",
+      "13. ProfileSetup - Photos et profil complet",
+      "14. MainApp - Application principale (Découvrir/Matchs/Profil)"
+    ]
+  },
+  "styles": {
+    "App.css": {
+      "description": "Styles globaux de l'application React",
+      "themes": {
+        "couleurs_principales": [
+          "Rose vif (#FF1493)",
+          "Noir (#000)",
+          "Blanc (#FFF)"
+        ],
+        "effets": [
+          "Dégradés",
+          "Animations de transition",
+          "Hover effects",
+          "Sliders personnalisés"
+        ]
+      }
+    }
+  },
+  "resume_technique": {
+    "frontend": {
+      "framework": "React 18",
+      "bundler": "Vite",
+      "composants": "27 composants (15 pages + 4 shared + 1 service + 7 autres)",
+      "routing": "Géré par state dans App.jsx",
+      "state_management": "useState hooks",
+      "stockage_local": "localStorage pour démo",
+      "backend_integration": "Supabase pour production"
+    },
+    "backend": {
+      "framework": "Flask (Python)",
+      "templates": "Jinja2",
+      "routes": "3 blueprints (dashboard, academy, testing)",
+      "api_endpoints": "Multiples endpoints de test",
+      "securite": "API Key Manager avec chiffrement"
+    },
+    "plateformes_integrees": 24,
+    "total_fonctions_testables": "Variable (estimation 150+)"
+  }
+}
