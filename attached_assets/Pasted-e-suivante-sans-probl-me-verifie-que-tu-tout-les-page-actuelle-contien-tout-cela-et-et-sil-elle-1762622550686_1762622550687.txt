@@ -1,0 +1,56 @@
+e suivante sans problème ! 🎉
+verifie que tu tout les page actuelle contien tout cela et et sil elle nexiste pas , tu peut les creer ! et presente moi des suggestion apres avoir tout corriger pour que japprouve ou pas te suggestion;Vérifie que toutes les pages actuelles contiennent tous ces éléments.
+Si certaines pages n’existent pas, tu peux les créer.
+
+Ensuite, présente-moi des suggestions après avoir tout corrigé, afin que je puisse les approuver ou non.
+
+⚙️ Modifications à inclure :
+
+Bouton “Aimer anonymement (admirateur secret)”
+→ Ajouter un bouton sur chaque photo permettant à un utilisateur d’aimer une image de façon anonyme.
+
+Champs supplémentaires dans le profil :
+
+Pseudonyme → À placer sur la même page que le nom et le prénom.
+
+Nationalité → À ajouter également sur cette même page.
+
+Nouvelle page : “Questions intimes secrètes”
+
+Ajouter les champs suivants (de préférence sous forme de sliders ou boutons Oui/Non) :
+
+Questions générales :
+
+Avez-vous déjà été trahi ? (slide Oui / Non)
+
+Avez-vous déjà trahi ? (slide Oui / Non)
+
+Êtes-vous vierge ?
+
+(Si non : “À quel âge avez-vous perdu votre virginité ?”)
+
+Avez-vous déjà fait du bénévolat ? (slide Oui / Non)
+
+Aimez-vous recevoir des bouquets de fleurs ? (slide Oui / Non)
+
+Aimez-vous recevoir des câlins ? (slide Oui / Non)
+
+Quelle importance accordez-vous à l’argent ? (slide de 0 à 10)
+
+Questions spécifiques (femmes uniquement) :
+
+La taille du sexe compte-t-elle pour vous ? (slide Oui / Non)
+
+Taille minimale que vous préférez ? (slide numérique ou échelle)
+
+Taille maximale que vous préférez ? (slide numérique ou échelle)
+
+Questions spécifiques (hommes uniquement) :
+
+Quelle est la taille de votre sexe ? (slide numérique ou texte)
+
+Quelle importance accordez-vous à la spiritualité ?slide
+Préférez-vous passer vos soirées à la maison ou à sortir ?slide
+Buvez-vous de l’alcool ?slide
+avez vous un chat ou a chien? slide
+ et aussi un bouton  sur les foto de profil pour faire une denance avec de bouton pre defini (nudité, ce profil et fake, cette photo mappartien...
