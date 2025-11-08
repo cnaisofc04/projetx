@@ -1,4 +1,4 @@
-modules = ["python-3.11", "web", "nodejs-20"]
+modules = ["python-3.11", "nodejs-20", "web"]
 [agent]
 expertMode = true
 
@@ -72,7 +72,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd client && npm run dev"
+args = "gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app"
 waitForPort = 5000
 
 [[workflows.workflow]]
@@ -93,5 +93,5 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 38875
+localPort = 44015
 externalPort = 3000
