@@ -1,22 +1,26 @@
 import { useState } from 'react';
 import Logo from './Logo';
+import nationalities from '../data/nationalities';
 
 export default function SignupForm({ onNext }) {
   const [formData, setFormData] = useState({
     gender: '',
     firstName: '',
     lastName: '',
+    pseudonym: '',
     email: '',
     password: '',
     confirmPassword: '',
     birthDate: '',
     city: '',
-    country: ''
+    country: '',
+    nationality: ''
   });
 
   const [errors, setErrors] = useState({});
 
   const alphabeticRegex = /^[a-zA-ZÀ-ÿ\s'-]+$/;
+  const pseudonymRegex = /^[a-zA-Z0-9_]+$/;
 
   const validate = () => {
     const newErrors = {};
@@ -33,6 +37,14 @@ export default function SignupForm({ onNext }) {
       newErrors.lastName = 'Nom requis';
     } else if (!alphabeticRegex.test(formData.lastName)) {
       newErrors.lastName = 'Seuls les lettres, espaces et tirets sont autorisés';
+    }
+    
+    if (!formData.pseudonym) {
+      newErrors.pseudonym = 'Pseudonyme requis';
+    } else if (formData.pseudonym.length < 3 || formData.pseudonym.length > 20) {
+      newErrors.pseudonym = 'Entre 3 et 20 caractères';
+    } else if (!pseudonymRegex.test(formData.pseudonym)) {
+      newErrors.pseudonym = 'Lettres, chiffres et underscore uniquement (pas d\'espaces)';
     }
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -73,6 +85,10 @@ export default function SignupForm({ onNext }) {
       newErrors.country = 'Pays requis';
     } else if (!alphabeticRegex.test(formData.country)) {
       newErrors.country = 'Seuls les lettres, espaces et tirets sont autorisés';
+    }
+
+    if (!formData.nationality) {
+      newErrors.nationality = 'Nationalité requise';
     }
 
     setErrors(newErrors);
@@ -140,6 +156,19 @@ export default function SignupForm({ onNext }) {
           </div>
 
           <div className="form-group">
+            <label>Pseudonyme *</label>
+            <input
+              type="text"
+              value={formData.pseudonym}
+              onChange={(e) => setFormData({...formData, pseudonym: e.target.value})}
+              placeholder="pseudo123 (3-20 caractères, lettres, chiffres, _)"
+              maxLength={20}
+            />
+            {errors.pseudonym && <span className="error">{errors.pseudonym}</span>}
+            <small className="help-text">Votre pseudonyme sera visible sur votre profil</small>
+          </div>
+
+          <div className="form-group">
             <label>Email *</label>
             <input
               type="email"
@@ -204,6 +233,24 @@ export default function SignupForm({ onNext }) {
               placeholder="France, Canada..."
             />
             {errors.country && <span className="error">{errors.country}</span>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="nationality">Nationalité *</label>
+            <select
+              id="nationality"
+              value={formData.nationality}
+              onChange={(e) => setFormData({...formData, nationality: e.target.value})}
+              className="nationality-select"
+            >
+              <option value="">Sélectionnez votre nationalité</option>
+              {nationalities.map(nat => (
+                <option key={nat.code} value={nat.code}>
+                  {nat.flag} {nat.name}
+                </option>
+              ))}
+            </select>
+            {errors.nationality && <span className="error">{errors.nationality}</span>}
           </div>
 
           <button type="submit" className="primary-button">
