@@ -1,12 +1,14 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Utiliser les secrets Replit directement
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://dnbqttkpapozpzqjewfb.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRuYnF0dGtwYXBvenB6cWpld2ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA3MzUxMzMsImV4cCI6MjA0NjMxMTEzM30.BRxADEJ2fgXUr1NnLBCeIehFNEFfXZm1Q3M5WU6DsUM';
+// 🔹 CONFIGURATION DYNAMIQUE: Hommes OU Femmes selon le contexte utilisateur
+// Par défaut, utiliser la base HOMMES (sera changé dynamiquement après login)
+const supabaseUrl = import.meta.env.VITE_SUPABASE_MAN_URL || import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_MAN_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 console.log('🔧 Supabase URL:', supabaseUrl);
 console.log('🔧 Supabase Key présente:', supabaseAnonKey ? '✅ Oui' : '❌ Non');
+console.log('🔧 Mode:', 'Profils (Hommes/Femmes séparés)');
 
 // Validation des variables d'environnement
 if (!supabaseUrl || !supabaseAnonKey) {
