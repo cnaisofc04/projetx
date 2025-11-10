@@ -14,8 +14,14 @@ def test_supabase_men():
     url = os.getenv('profil_man_supabase_URL')
     key = os.getenv('profil_man_supabase_API_service_role_secret')
     
+    print(f"URL: {url}")
+    print(f"Key présente: {'✅' if key else '❌'}")
+    
     if not url or not key:
         print("❌ Variables manquantes!")
+        print("Ajoutez dans Secrets:")
+        print("  - profil_man_supabase_URL")
+        print("  - profil_man_supabase_API_service_role_secret")
         return False
     
     try:
@@ -23,6 +29,7 @@ def test_supabase_men():
         # Test simple
         result = client.table('profiles').select('count').limit(1).execute()
         print(f"✅ Connexion OK: {url}")
+        print(f"✅ Table 'profiles' accessible")
         return True
     except Exception as e:
         print(f"❌ Erreur: {e}")
@@ -36,8 +43,14 @@ def test_supabase_women():
     url = os.getenv('profil_woman_supabase_URL')
     key = os.getenv('profil_woman_supabase_API_service_role_secret')
     
+    print(f"URL: {url}")
+    print(f"Key présente: {'✅' if key else '❌'}")
+    
     if not url or not key:
         print("❌ Variables manquantes!")
+        print("Ajoutez dans Secrets:")
+        print("  - profil_woman_supabase_URL")
+        print("  - profil_woman_supabase_API_service_role_secret")
         return False
     
     try:
@@ -45,6 +58,7 @@ def test_supabase_women():
         # Test simple
         result = client.table('profiles').select('count').limit(1).execute()
         print(f"✅ Connexion OK: {url}")
+        print(f"✅ Table 'profiles' accessible")
         return True
     except Exception as e:
         print(f"❌ Erreur: {e}")
@@ -59,8 +73,16 @@ def test_appwrite():
     project_id = os.getenv('PROJET_ID_APPWRITE')
     api_key = os.getenv('API__KEY_APPWRITE')
     
+    print(f"Endpoint: {endpoint}")
+    print(f"Project ID présent: {'✅' if project_id else '❌'}")
+    print(f"API Key présente: {'✅' if api_key else '❌'}")
+    
     if not all([endpoint, project_id, api_key]):
         print("❌ Variables manquantes!")
+        print("Ajoutez dans Secrets:")
+        print("  - API_ENDPOINT_APPRWRITE")
+        print("  - PROJET_ID_APPWRITE")
+        print("  - API__KEY_APPWRITE")
         return False
     
     try:
@@ -99,4 +121,18 @@ if __name__ == '__main__':
     if all(results.values()):
         print("\n🎉 TOUS LES TESTS RÉUSSIS!")
     else:
-        print("\n⚠️ Certains tests ont échoué. Vérifiez les secrets Replit.")
+        print("\n⚠️ Certains tests ont échoué.")
+        print("\n📝 SECRETS REQUIS DANS REPLIT:")
+        print("  Backend (Python):")
+        print("    - profil_man_supabase_URL")
+        print("    - profil_man_supabase_API_service_role_secret")
+        print("    - profil_woman_supabase_URL")
+        print("    - profil_woman_supabase_API_service_role_secret")
+        print("    - API_ENDPOINT_APPRWRITE")
+        print("    - PROJET_ID_APPWRITE")
+        print("    - API__KEY_APPWRITE")
+        print("\n  Frontend (fichier client/.env):")
+        print("    - VITE_SUPABASE_MAN_URL")
+        print("    - VITE_SUPABASE_MAN_ANON_KEY")
+        print("    - VITE_SUPABASE_WOMAN_URL")
+        print("    - VITE_SUPABASE_WOMAN_ANON_KEY")
