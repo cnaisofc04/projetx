@@ -1,0 +1,54 @@
+[2025-11-10 14:54:46 +0000] [94] [INFO] Starting gunicorn 23.0.0
+[2025-11-10 14:54:46 +0000] [94] [INFO] Listening at: http://0.0.0.0:5000 (94)
+[2025-11-10 14:54:46 +0000] [94] [INFO] Using worker: sync
+[2025-11-10 14:54:46 +0000] [94] [INFO] Handling signal: winchid: 105
+[2025-11-10 14:54:46 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:47 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+   Clés manquantes: URL_SUPABASE_AUTOQG, SUPABASE_ANON_PUBLIC, SUPABASE_AUTOQG_API_KEY, SUPABASE_ROLE_SECRET, api_key_secret_supabase
+   Clés manquantes: AMPLITUDE_EU_Residency_Server_URL
+   Clés manquantes: POSTHOG_API_KEY
+   Clés manquantes: GABRIEL_API_KEY_1
+   Clés manquantes: Try_out_Your_new_API_key_NODE
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:48 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
+[2025-11-10 14:54:49 +0000] [94] [INFO] Handling signal: winch
