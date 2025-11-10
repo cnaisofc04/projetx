@@ -1,173 +1,86 @@
-import { createClient } from '@supabase/supabase-js';
+/**
+ * Service de sauvegarde des profils
+ * Utilise l'API Flask backend avec fallback automatique Supabase → Appwrite
+ */
 
-// ============================================
-// CONFIGURATION DOUBLE INSTANCE SUPABASE
-// ============================================
+const API_BASE_URL = window.location.origin;
 
-// Variables pour Supabase HOMMES
-const supabaseManUrl = import.meta.env.VITE_SUPABASE_MAN_URL;
-const supabaseManAnonKey = import.meta.env.VITE_SUPABASE_MAN_ANON_KEY;
+export const supabase = {
+  /**
+   * Sauvegarde un profil via l'API Flask
+   * Le backend gère automatiquement le fallback Supabase → Appwrite
+   */
+  async saveProfile(profileData) {
+    console.log('📤 Sauvegarde profil via API Flask:', profileData.email);
 
-// Variables pour Supabase FEMMES  
-const supabaseWomanUrl = import.meta.env.VITE_SUPABASE_WOMAN_URL;
-const supabaseWomanAnonKey = import.meta.env.VITE_SUPABASE_WOMAN_ANON_KEY;
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/save-profile`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profileData)
+      });
 
-console.log('🔧 Supabase MAN URL:', supabaseManUrl);
-console.log('🔧 Supabase MAN Key présente:', supabaseManAnonKey ? '✅ Oui' : '❌ Non');
-console.log('🔧 Supabase WOMAN URL:', supabaseWomanUrl);
-console.log('🔧 Supabase WOMAN Key présente:', supabaseWomanAnonKey ? '✅ Oui' : '❌ Non');
-
-// Validation des variables d'environnement
-if (!supabaseManUrl || !supabaseManAnonKey || !supabaseWomanUrl || !supabaseWomanAnonKey) {
-  console.error('❌ ERREUR: Variables Supabase manquantes dans client/.env');
-  console.error('Ajoutez VITE_SUPABASE_MAN_URL, VITE_SUPABASE_MAN_ANON_KEY');
-  console.error('et VITE_SUPABASE_WOMAN_URL, VITE_SUPABASE_WOMAN_ANON_KEY');
-}
-
-// Créer les clients Supabase (hommes et femmes)
-export const supabaseMan = createClient(supabaseManUrl, supabaseManAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-  }
-});
-
-export const supabaseWoman = createClient(supabaseWomanUrl, supabaseWomanAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-  }
-});
-
-// Fonction pour obtenir le bon client selon le genre
-const getSupabaseClient = (gender) => {
-  return gender === 'man' ? supabaseMan : supabaseWoman;
-};
-
-// ============================================
-// FONCTION: Sauvegarder le profil complet
-// ============================================
-export const saveProfile = async (email, profileData) => {
-  try {
-    console.log('📤 Tentative de sauvegarde profil pour:', email);
-    console.log('📦 Données:', profileData);
-
-    const gender = profileData.gender;
-    const supabase = getSupabaseClient(gender);
-    const bucketName = gender === 'man' ? 'avatars-men' : 'avatars-women';
-
-    // 1. Upload des photos si présentes
-    let photoUrls = [];
-    if (profileData.photos && profileData.photos.length > 0) {
-      console.log(`📸 Upload de ${profileData.photos.length} photos vers ${bucketName}`);
-
-      for (let i = 0; i < profileData.photos.length; i++) {
-        const photo = profileData.photos[i];
-
-        // Convertir base64 en blob
-        const base64Data = photo.split(',')[1];
-        const byteCharacters = atob(base64Data);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let j = 0; j < byteCharacters.length; j++) {
-          byteNumbers[j] = byteCharacters.charCodeAt(j);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'image/jpeg' });
-
-        // Upload vers Storage
-        const fileName = `${email}/photo_${i}.jpg`;
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from(bucketName)
-          .upload(fileName, blob, {
-            cacheControl: '3600',
-            upsert: true
-          });
-
-        if (uploadError) {
-          console.error('❌ Erreur upload photo:', uploadError);
-          throw uploadError;
-        }
-
-        // Récupérer l'URL publique
-        const { data: urlData } = supabase.storage
-          .from(bucketName)
-          .getPublicUrl(fileName);
-
-        photoUrls.push(urlData.publicUrl);
-        console.log(`✅ Photo ${i + 1} uploadée:`, urlData.publicUrl);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Erreur de sauvegarde');
       }
+
+      const result = await response.json();
+      console.log('✅ Profil sauvegardé:', result.database);
+
+      return result;
+    } catch (error) {
+      console.error('❌ Erreur sauvegarde:', error);
+      throw error;
     }
+  },
 
-    // 2. Insérer le profil dans la table
-    const profileToSave = {
-      email: email,
-      gender: gender,
-      first_name: profileData.firstName,
-      last_name: profileData.lastName,
-      birth_date: profileData.birthDate,
-      photos: photoUrls,
-      professions: profileData.professions || [],
-      interests: profileData.interests || [],
-      favorite_books: profileData.favoriteBooks || [],
-      favorite_movies: profileData.favoriteMovies || [],
-      favorite_music: profileData.favoriteMusic || []
-    };
+  /**
+   * Récupère un profil
+   */
+  async getProfile(email, gender) {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/get-profile?email=${encodeURIComponent(email)}&gender=${gender}`
+      );
 
-    console.log('💾 Sauvegarde profil:', profileToSave);
+      if (!response.ok) {
+        throw new Error('Profil non trouvé');
+      }
 
-    const { data, error } = await supabase
-      .from('profiles')
-      .insert([profileToSave])
-      .select();
-
-    if (error) {
-      console.error('❌ Erreur Supabase:', error);
-      throw new Error(`Erreur base de données: ${error.message}`);
+      return await response.json();
+    } catch (error) {
+      console.error('❌ Erreur récupération profil:', error);
+      throw error;
     }
-
-    console.log('✅ Profil sauvegardé avec succès:', data);
-    return { success: true, data: data[0] };
-
-  } catch (error) {
-    console.error('❌ Erreur sauvegarde profil:', error);
-    throw {
-      message: error.message || 'Erreur inconnue',
-      details: error.details || 'Vérifiez que la table "profiles" existe dans Supabase'
-    };
   }
 };
 
 // Export par défaut (pour compatibilité)
-export const supabase = supabaseMan;
+// This export is removed as the new supabase object is intended to replace the previous one entirely.
+// export const supabase = supabaseMan;
+
+// ============================================
+// FONCTION: Sauvegarder le profil complet
+// ============================================
+// This function is now replaced by the saveProfile method within the new supabase object.
+// export const saveProfile = async (email, profileData) => { ... };
 
 // ============================================
 // FONCTION: Récupérer un profil
 // ============================================
-export const getProfile = async (userId) => {
-  try {
-    // Le client Supabase à utiliser dépend du genre, mais pour une récupération simple,
-    // nous devons potentiellement interroger les deux bases ou avoir une logique plus complexe ici.
-    // Pour l'instant, utilisons manSupabase comme défaut, mais cela devra être affiné.
-    const { data, error } = await supabaseMan
-      .from('profiles')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
-
-    if (error && error.code !== 'PGRST116') { // PGRST116 = not found
-      throw error;
-    }
-
-    return { data, error: null };
-  } catch (error) {
-    console.error('❌ Erreur récupération profil:', error);
-    return { data: null, error };
-  }
-};
+// This function is now replaced by the getProfile method within the new supabase object.
+// export const getProfile = async (userId) => { ... };
 
 // ============================================
 // FONCTION: Upload photo
 // ============================================
+// The uploadPhoto function is not directly replaced by the new supabase object.
+// If photo uploads are still needed directly, a new implementation using the Flask API would be required.
+// For now, we'll comment it out as the primary focus was on profile saving/retrieval via Flask.
+/*
 export const uploadPhoto = async (file, userId) => {
   // Cette fonction doit aussi être mise à jour pour utiliser le bon bucket basé sur le genre de l'utilisateur.
   // Pour l'instant, elle utilise un bucket générique 'photos' qui pourrait ne plus exister.
@@ -217,10 +130,14 @@ export const uploadPhoto = async (file, userId) => {
     };
   }
 };
+*/
 
 // ============================================
 // FONCTION: Test de connexion
 // ============================================
+// This function is also not directly replaced. If a connection test is needed,
+// it should now target the Flask API.
+/*
 export const testConnection = async () => {
   try {
     // Test de connexion avec le client par défaut (supabaseMan)
@@ -241,3 +158,4 @@ export const testConnection = async () => {
     return false;
   }
 };
+*/
