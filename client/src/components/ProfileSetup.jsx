@@ -87,20 +87,30 @@ export default function ProfileSetup({ user, onComplete }) {
         favoriteMusic
       };
 
+      // Sauvegarder via le backend Flask (évite les problèmes CORS)
       try {
-        const { saveProfile } = await import('../services/supabaseClient');
-        
-        const result = await saveProfile(user.id || user.email, completeProfile);
+        console.log('📤 Envoi au backend pour:', user.email);
+        console.log('📦 Données:', completeProfile);
 
-        if (result.error) {
-          throw result.error;
+        const response = await fetch('http://0.0.0.0:5000/api/save-profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(completeProfile)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Erreur serveur');
         }
 
-        console.log('✅ Profil sauvegardé avec succès');
+        const result = await response.json();
+        console.log('✅ Profil sauvegardé avec succès:', result);
         onComplete(completeProfile);
       } catch (error) {
-        console.error('❌ Erreur sauvegarde:', error);
-        alert(`Erreur lors de la sauvegarde: ${error.message || 'Erreur inconnue'}`);
+        console.error('❌ Erreur sauvegarde profil:', error);
+        alert(`Erreur sauvegarde: ${error.message}\nVeuillez réessayer ou contacter le support.`);
       }
     }
   };
